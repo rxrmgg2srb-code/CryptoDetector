@@ -393,6 +393,17 @@
         UI.addLogEntry(' CSV exportado', 'success');
     }
 
+    function exportPerformanceCSV() {
+        if (typeof SignalTracker !== 'undefined') {
+            const success = SignalTracker.exportCSV();
+            if (success) {
+                UI.addLogEntry(' Signal CSV exportado', 'success');
+            } else {
+                UI.addLogEntry(' Todavia no hay suficientes señales confirmadas para exportar', 'warning');
+            }
+        }
+    }
+
     // Re-render on filter change (price-m5 requiere nuevo scan completo)
     document.querySelectorAll('#controls-bar select, #controls-bar input[type=checkbox]').forEach(el => {
         el.addEventListener('change', () => {
@@ -515,7 +526,7 @@
 
     // Expose to global
     window.app = {
-        toggleScanner, showDetail, closeSidebar, clearHistory, exportCSV,
+        toggleScanner, showDetail, closeSidebar, clearHistory, exportCSV, exportPerformanceCSV,
         toggleBlacklist, toggleFavorite, clearBlacklist,
         isFavorited, isBlacklisted,
         openWalletModal, closeWalletModal, importWallet, disconnectWallet,
