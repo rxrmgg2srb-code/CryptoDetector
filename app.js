@@ -216,6 +216,11 @@
         // Guardar historial solo 1 de cada 3 ciclos para ahorrar escrituras
         if (scanCycleCount % 3 === 0) saveHistory(allTokens);
         processAlerts(sorted);
+        
+        if (typeof SignalTracker !== 'undefined') {
+            SignalTracker.record(allTokens);
+        }
+        
         } finally {
             scanInProgress = false;
         }
@@ -272,6 +277,9 @@
                 }
                 rerenderList();
                 processAlerts(liveTokens);
+                if (typeof SignalTracker !== 'undefined') {
+                    SignalTracker.record(liveTokens);
+                }
                 UI.addLogEntry(`LIVE: ${liveTokens.length} tokens nuevos axadidos en tiempo real`, 'success');
             }
         } finally {
