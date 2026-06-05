@@ -1,0 +1,350 @@
+{
+  "timestamp": "2025-11-24T23:18:27.001Z",
+  "overall": {
+    "statements": "41.92",
+    "branches": "34.85",
+    "functions": "29.12",
+    "lines": "42.55"
+  },
+  "overallAvg": "37.11",
+  "threshold": 95,
+  "goalAchieved": false,
+  "gaps": {
+    "critical": [
+      {
+        "file": "\\hooks\\useDegenCard.ts",
+        "statements": 2.45,
+        "branches": 0,
+        "functions": 0,
+        "lines": 2.5,
+        "avg": "1.24"
+      },
+      {
+        "file": "\\hooks\\useTokenSecurity.ts",
+        "statements": 5.66,
+        "branches": 0,
+        "functions": 0,
+        "lines": 5.66,
+        "avg": "2.83"
+      },
+      {
+        "file": "\\lib\\streaks.ts",
+        "statements": 7.57,
+        "branches": 0,
+        "functions": 0,
+        "lines": 8.47,
+        "avg": "4.01"
+      },
+      {
+        "file": "\\lib\\badges-advanced.ts",
+        "statements": 8.13,
+        "branches": 0,
+        "functions": 0,
+        "lines": 8.23,
+        "avg": "4.09"
+      },
+      {
+        "file": "\\lib\\notifications.ts",
+        "statements": 8.69,
+        "branches": 0,
+        "functions": 0,
+        "lines": 8.82,
+        "avg": "4.38"
+      },
+      {
+        "file": "\\lib\\csrfProtection.ts",
+        "statements": 10.71,
+        "branches": 0,
+        "functions": 0,
+        "lines": 11.11,
+        "avg": "5.46"
+      },
+      {
+        "file": "\\lib\\fileUploadValidation.ts",
+        "statements": 11.34,
+        "branches": 0,
+        "functions": 0,
+        "lines": 11.57,
+        "avg": "5.73"
+      },
+      {
+        "file": "\\lib\\whaleTracker.ts",
+        "statements": 12.29,
+        "branches": 0,
+        "functions": 0,
+        "lines": 12.82,
+        "avg": "6.28"
+      },
+      {
+        "file": "\\lib\\walletAuth.ts",
+        "statements": 13.2,
+        "branches": 0,
+        "functions": 0,
+        "lines": 13.2,
+        "avg": "6.60"
+      },
+      {
+        "file": "\\lib\\aiCoach.ts",
+        "statements": 12.37,
+        "branches": 4.16,
+        "functions": 0,
+        "lines": 13.04,
+        "avg": "7.39"
+      },
+      {
+        "file": "\\lib\\adminAuth.ts",
+        "statements": 15,
+        "branches": 0,
+        "functions": 0,
+        "lines": 16.66,
+        "avg": "7.92"
+      },
+      {
+        "file": "\\lib\\rateLimit.ts",
+        "statements": 16.27,
+        "branches": 0,
+        "functions": 0,
+        "lines": 16.27,
+        "avg": "8.13"
+      },
+      {
+        "file": "\\lib\\cache\\redis.ts",
+        "statements": 17.28,
+        "branches": 4.25,
+        "functions": 0,
+        "lines": 17.28,
+        "avg": "9.70"
+      },
+      {
+        "file": "\\lib\\badges-with-points.ts",
+        "statements": 18.88,
+        "branches": 0,
+        "functions": 0,
+        "lines": 24.63,
+        "avg": "10.88"
+      },
+      {
+        "file": "\\lib\\queryOptimization.ts",
+        "statements": 21.31,
+        "branches": 0,
+        "functions": 0,
+        "lines": 22.41,
+        "avg": "10.93"
+      },
+      {
+        "file": "\\lib\\referralEngine.ts",
+        "statements": 19.04,
+        "branches": 5.12,
+        "functions": 7.69,
+        "lines": 19.27,
+        "avg": "12.78"
+      },
+      {
+        "file": "\\lib\\exportHelpers.ts",
+        "statements": 26.66,
+        "branches": 0,
+        "functions": 0,
+        "lines": 26.66,
+        "avg": "13.33"
+      },
+      {
+        "file": "\\lib\\utils\\format.ts",
+        "statements": 24,
+        "branches": 0,
+        "functions": 0,
+        "lines": 30,
+        "avg": "13.50"
+      },
+      {
+        "file": "\\lib\\flashSales.ts",
+        "statements": 26.38,
+        "branches": 0,
+        "functions": 22.22,
+        "lines": 27.53,
+        "avg": "19.03"
+      },
+      {
+        "file": "\\hooks\\useTokenAnalysis.ts",
+        "statements": 27.77,
+        "branches": 0,
+        "functions": 25,
+        "lines": 28.57,
+        "avg": "20.34"
+      },
+      {
+        "file": "\\lib\\utils\\date.ts",
+        "statements": 22.58,
+        "branches": 18.75,
+        "functions": 25,
+        "lines": 25,
+        "avg": "22.83"
+      },
+      {
+        "file": "\\lib\\utils\\number.ts",
+        "statements": 37.5,
+        "branches": 0,
+        "functions": 20,
+        "lines": 37.5,
+        "avg": "23.75"
+      },
+      {
+        "file": "\\lib\\logger.ts",
+        "statements": 27.5,
+        "branches": 47.61,
+        "functions": 31.25,
+        "lines": 27.5,
+        "avg": "33.47"
+      },
+      {
+        "file": "\\lib\\config.ts",
+        "statements": 42.1,
+        "branches": 61.11,
+        "functions": 0,
+        "lines": 44.44,
+        "avg": "36.91"
+      },
+      {
+        "file": "\\pages\\api\\admin\\system-health.ts",
+        "statements": 26.47,
+        "branches": 14.28,
+        "functions": 100,
+        "lines": 26.47,
+        "avg": "41.80"
+      },
+      {
+        "file": "\\pages\\api\\streaks\\status.ts",
+        "statements": 28,
+        "branches": 14.28,
+        "functions": 100,
+        "lines": 28,
+        "avg": "42.57"
+      },
+      {
+        "file": "\\lib\\errors.ts",
+        "statements": 63.41,
+        "branches": 25,
+        "functions": 35.71,
+        "lines": 63.41,
+        "avg": "46.88"
+      }
+    ],
+    "high": [
+      {
+        "file": "\\lib\\services\\tokenSecurityAnalyzer.ts",
+        "statements": 52.52,
+        "branches": 36.32,
+        "functions": 57.89,
+        "lines": 54.47,
+        "avg": "50.30"
+      },
+      {
+        "file": "\\pages\\api\\cron\\detect-whales.ts",
+        "statements": 46.87,
+        "branches": 20,
+        "functions": 100,
+        "lines": 46.87,
+        "avg": "53.44"
+      },
+      {
+        "file": "\\lib\\badges-generator.ts",
+        "statements": 60,
+        "branches": 0,
+        "functions": 100,
+        "lines": 60,
+        "avg": "55.00"
+      },
+      {
+        "file": "\\hooks\\useWhaleRadar.ts",
+        "statements": 61.31,
+        "branches": 41.5,
+        "functions": 66.66,
+        "lines": 63.86,
+        "avg": "58.33"
+      },
+      {
+        "file": "\\lib\\retryLogic.ts",
+        "statements": 57.57,
+        "branches": 65,
+        "functions": 54.54,
+        "lines": 57.81,
+        "avg": "58.73"
+      },
+      {
+        "file": "\\pages\\api\\super-token-score.ts",
+        "statements": 80.59,
+        "branches": 60,
+        "functions": 21.42,
+        "lines": 80.59,
+        "avg": "60.65"
+      },
+      {
+        "file": "\\lib\\services\\superTokenScorer.ts",
+        "statements": 60.18,
+        "branches": 49.02,
+        "functions": 76,
+        "lines": 61.56,
+        "avg": "61.69"
+      }
+    ],
+    "medium": [
+      {
+        "file": "\\lib\\sanitize.ts",
+        "statements": 78.18,
+        "branches": 66.66,
+        "functions": 62.5,
+        "lines": 79.59,
+        "avg": "71.73"
+      },
+      {
+        "file": "\\pages\\api\\health.ts",
+        "statements": 81.81,
+        "branches": 44.44,
+        "functions": 100,
+        "lines": 81.81,
+        "avg": "77.02"
+      },
+      {
+        "file": "\\pages\\api\\analyze.ts",
+        "statements": 94.59,
+        "branches": 53.84,
+        "functions": 66.66,
+        "lines": 97.22,
+        "avg": "78.08"
+      },
+      {
+        "file": "\\lib\\prisma.ts",
+        "statements": 82.6,
+        "branches": 52.38,
+        "functions": 100,
+        "lines": 85.71,
+        "avg": "80.17"
+      }
+    ],
+    "low": [
+      {
+        "file": "\\components\\leaderboard\\utils.ts",
+        "statements": 83.33,
+        "branches": 63.63,
+        "functions": 100,
+        "lines": 100,
+        "avg": "86.74"
+      },
+      {
+        "file": "\\pages\\api\\flash-sales\\active.ts",
+        "statements": 100,
+        "branches": 66.66,
+        "functions": 100,
+        "lines": 100,
+        "avg": "91.66"
+      },
+      {
+        "file": "\\lib\\challenges.ts",
+        "statements": 91.91,
+        "branches": 90.47,
+        "functions": 100,
+        "lines": 92.47,
+        "avg": "93.71"
+      }
+    ]
+  }
+}

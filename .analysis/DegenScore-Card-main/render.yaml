@@ -1,0 +1,45 @@
+services:
+  # Web Service (Next.js)
+  - type: web
+    name: degenscore-card
+    env: node
+    region: frankfurt # o oregon para gratis
+    plan: free # Plan gratuito
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: node scripts/migrate-and-start.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # CRÍTICAS - Configurar manualmente en Render Dashboard
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # Lo configurarás manualmente
+      - key: JWT_SECRET
+        sync: false # Genera con: openssl rand -base64 32
+      - key: HELIUS_API_KEY
+        sync: false
+      - key: HELIUS_RPC_URL
+        sync: false
+      - key: TREASURY_WALLET
+        sync: false
+      - key: NEXT_PUBLIC_TREASURY_WALLET
+        sync: false
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://degenscore-card.onrender.com # Cambia esto por tu URL de Render
+      - key: NEXT_PUBLIC_SOLANA_NETWORK
+        value: mainnet-beta
+      - key: NEXT_PUBLIC_HELIUS_RPC_URL
+        sync: false
+      - key: NEXT_PUBLIC_MINT_PRICE_SOL
+        value: "1"
+      - key: NODE_VERSION
+        value: 18
+
+  # PostgreSQL Database (gratis hasta 90 días)
+  - type: pgsql
+    name: degenscore-db
+    region: frankfurt
+    plan: free
+    databaseName: degenscore
+    databaseUser: degenscore_user

@@ -1,0 +1,1012 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for lib/badges-with-points.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">lib</a> badges-with-points.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">8.16% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>8/98</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/31</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/25</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">11.59% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>8/69</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a>
+<a name='L84'></a><a href='#L84'>84</a>
+<a name='L85'></a><a href='#L85'>85</a>
+<a name='L86'></a><a href='#L86'>86</a>
+<a name='L87'></a><a href='#L87'>87</a>
+<a name='L88'></a><a href='#L88'>88</a>
+<a name='L89'></a><a href='#L89'>89</a>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a>
+<a name='L122'></a><a href='#L122'>122</a>
+<a name='L123'></a><a href='#L123'>123</a>
+<a name='L124'></a><a href='#L124'>124</a>
+<a name='L125'></a><a href='#L125'>125</a>
+<a name='L126'></a><a href='#L126'>126</a>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a>
+<a name='L146'></a><a href='#L146'>146</a>
+<a name='L147'></a><a href='#L147'>147</a>
+<a name='L148'></a><a href='#L148'>148</a>
+<a name='L149'></a><a href='#L149'>149</a>
+<a name='L150'></a><a href='#L150'>150</a>
+<a name='L151'></a><a href='#L151'>151</a>
+<a name='L152'></a><a href='#L152'>152</a>
+<a name='L153'></a><a href='#L153'>153</a>
+<a name='L154'></a><a href='#L154'>154</a>
+<a name='L155'></a><a href='#L155'>155</a>
+<a name='L156'></a><a href='#L156'>156</a>
+<a name='L157'></a><a href='#L157'>157</a>
+<a name='L158'></a><a href='#L158'>158</a>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a>
+<a name='L168'></a><a href='#L168'>168</a>
+<a name='L169'></a><a href='#L169'>169</a>
+<a name='L170'></a><a href='#L170'>170</a>
+<a name='L171'></a><a href='#L171'>171</a>
+<a name='L172'></a><a href='#L172'>172</a>
+<a name='L173'></a><a href='#L173'>173</a>
+<a name='L174'></a><a href='#L174'>174</a>
+<a name='L175'></a><a href='#L175'>175</a>
+<a name='L176'></a><a href='#L176'>176</a>
+<a name='L177'></a><a href='#L177'>177</a>
+<a name='L178'></a><a href='#L178'>178</a>
+<a name='L179'></a><a href='#L179'>179</a>
+<a name='L180'></a><a href='#L180'>180</a>
+<a name='L181'></a><a href='#L181'>181</a>
+<a name='L182'></a><a href='#L182'>182</a>
+<a name='L183'></a><a href='#L183'>183</a>
+<a name='L184'></a><a href='#L184'>184</a>
+<a name='L185'></a><a href='#L185'>185</a>
+<a name='L186'></a><a href='#L186'>186</a>
+<a name='L187'></a><a href='#L187'>187</a>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a>
+<a name='L215'></a><a href='#L215'>215</a>
+<a name='L216'></a><a href='#L216'>216</a>
+<a name='L217'></a><a href='#L217'>217</a>
+<a name='L218'></a><a href='#L218'>218</a>
+<a name='L219'></a><a href='#L219'>219</a>
+<a name='L220'></a><a href='#L220'>220</a>
+<a name='L221'></a><a href='#L221'>221</a>
+<a name='L222'></a><a href='#L222'>222</a>
+<a name='L223'></a><a href='#L223'>223</a>
+<a name='L224'></a><a href='#L224'>224</a>
+<a name='L225'></a><a href='#L225'>225</a>
+<a name='L226'></a><a href='#L226'>226</a>
+<a name='L227'></a><a href='#L227'>227</a>
+<a name='L228'></a><a href='#L228'>228</a>
+<a name='L229'></a><a href='#L229'>229</a>
+<a name='L230'></a><a href='#L230'>230</a>
+<a name='L231'></a><a href='#L231'>231</a>
+<a name='L232'></a><a href='#L232'>232</a>
+<a name='L233'></a><a href='#L233'>233</a>
+<a name='L234'></a><a href='#L234'>234</a>
+<a name='L235'></a><a href='#L235'>235</a>
+<a name='L236'></a><a href='#L236'>236</a>
+<a name='L237'></a><a href='#L237'>237</a>
+<a name='L238'></a><a href='#L238'>238</a>
+<a name='L239'></a><a href='#L239'>239</a>
+<a name='L240'></a><a href='#L240'>240</a>
+<a name='L241'></a><a href='#L241'>241</a>
+<a name='L242'></a><a href='#L242'>242</a>
+<a name='L243'></a><a href='#L243'>243</a>
+<a name='L244'></a><a href='#L244'>244</a>
+<a name='L245'></a><a href='#L245'>245</a>
+<a name='L246'></a><a href='#L246'>246</a>
+<a name='L247'></a><a href='#L247'>247</a>
+<a name='L248'></a><a href='#L248'>248</a>
+<a name='L249'></a><a href='#L249'>249</a>
+<a name='L250'></a><a href='#L250'>250</a>
+<a name='L251'></a><a href='#L251'>251</a>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a>
+<a name='L271'></a><a href='#L271'>271</a>
+<a name='L272'></a><a href='#L272'>272</a>
+<a name='L273'></a><a href='#L273'>273</a>
+<a name='L274'></a><a href='#L274'>274</a>
+<a name='L275'></a><a href='#L275'>275</a>
+<a name='L276'></a><a href='#L276'>276</a>
+<a name='L277'></a><a href='#L277'>277</a>
+<a name='L278'></a><a href='#L278'>278</a>
+<a name='L279'></a><a href='#L279'>279</a>
+<a name='L280'></a><a href='#L280'>280</a>
+<a name='L281'></a><a href='#L281'>281</a>
+<a name='L282'></a><a href='#L282'>282</a>
+<a name='L283'></a><a href='#L283'>283</a>
+<a name='L284'></a><a href='#L284'>284</a>
+<a name='L285'></a><a href='#L285'>285</a>
+<a name='L286'></a><a href='#L286'>286</a>
+<a name='L287'></a><a href='#L287'>287</a>
+<a name='L288'></a><a href='#L288'>288</a>
+<a name='L289'></a><a href='#L289'>289</a>
+<a name='L290'></a><a href='#L290'>290</a>
+<a name='L291'></a><a href='#L291'>291</a>
+<a name='L292'></a><a href='#L292'>292</a>
+<a name='L293'></a><a href='#L293'>293</a>
+<a name='L294'></a><a href='#L294'>294</a>
+<a name='L295'></a><a href='#L295'>295</a>
+<a name='L296'></a><a href='#L296'>296</a>
+<a name='L297'></a><a href='#L297'>297</a>
+<a name='L298'></a><a href='#L298'>298</a>
+<a name='L299'></a><a href='#L299'>299</a>
+<a name='L300'></a><a href='#L300'>300</a>
+<a name='L301'></a><a href='#L301'>301</a>
+<a name='L302'></a><a href='#L302'>302</a>
+<a name='L303'></a><a href='#L303'>303</a>
+<a name='L304'></a><a href='#L304'>304</a>
+<a name='L305'></a><a href='#L305'>305</a>
+<a name='L306'></a><a href='#L306'>306</a>
+<a name='L307'></a><a href='#L307'>307</a>
+<a name='L308'></a><a href='#L308'>308</a>
+<a name='L309'></a><a href='#L309'>309</a>
+<a name='L310'></a><a href='#L310'>310</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Sistema de Badges con Puntuación
+// Cada rarity tiene puntos asociados
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >BADGE_POINTS </span>= {
+  COMMON: 1,
+  RARE: 3,
+  EPIC: 5,
+  LEGENDARY: 10,
+  MYTHIC: 25,
+} as const;
+&nbsp;
+export type BadgeRarity = keyof typeof BADGE_POINTS;
+&nbsp;
+export interface BadgeDefinition {
+  key: string;
+  name: string;
+  description: string;
+  icon: string;
+  rarity: BadgeRarity;
+  category: 'volume' | 'pnl' | 'winrate' | 'activity' | 'social' | 'premium';
+  threshold?: number;
+  points: number;
+}
+&nbsp;
+// ═══════════════════════════════════════════════════════════════
+// VOLUMEN TRADING (15 badges)
+// ═══════════════════════════════════════════════════════════════
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >VOLUME_BADGES:</span> BadgeDefinition[] = [
+  { key: 'mini_degen', name: '🐣 Mini Degen', description: '1+ SOL traded', icon: '🐣', rarity: 'COMMON', category: 'volume', threshold: 1, points: BADGE_POINTS.COMMON },
+  { key: 'starter_trader', name: '💼 Starter', description: '5+ SOL traded', icon: '💼', rarity: 'COMMON', category: 'volume', threshold: 5, points: BADGE_POINTS.COMMON },
+  { key: 'fast_hands', name: '⚡ Fast Hands', description: '10+ SOL traded', icon: '⚡', rarity: 'COMMON', category: 'volume', threshold: 10, points: BADGE_POINTS.COMMON },
+  { key: 'shark_trader', name: '🦈 Shark', description: '25+ SOL traded', icon: '🦈', rarity: 'RARE', category: 'volume', threshold: 25, points: BADGE_POINTS.RARE },
+  { key: 'hot_wallet', name: '🔥 Hot Wallet', description: '50+ SOL traded', icon: '🔥', rarity: 'RARE', category: 'volume', threshold: 50, points: BADGE_POINTS.RARE },
+  { key: 'baby_whale', name: '🐳 Baby Whale', description: '75+ SOL traded', icon: '🐳', rarity: 'RARE', category: 'volume', threshold: 75, points: BADGE_POINTS.RARE },
+  { key: 'solid_trader', name: '💎 Solid Trader', description: '100+ SOL traded', icon: '💎', rarity: 'EPIC', category: 'volume', threshold: 100, points: BADGE_POINTS.EPIC },
+  { key: 'whale', name: '🐋 Whale', description: '150+ SOL traded', icon: '🐋', rarity: 'EPIC', category: 'volume', threshold: 150, points: BADGE_POINTS.EPIC },
+  { key: 'volcano_wallet', name: '🌋 Volcano', description: '250+ SOL traded', icon: '🌋', rarity: 'EPIC', category: 'volume', threshold: 250, points: BADGE_POINTS.EPIC },
+  { key: 'market_maker', name: '🪙 Market Maker', description: '300+ SOL traded', icon: '🪙', rarity: 'LEGENDARY', category: 'volume', threshold: 300, points: BADGE_POINTS.LEGENDARY },
+  { key: 'exec_whale', name: '💼 Executive Whale', description: '500+ SOL traded', icon: '💼', rarity: 'LEGENDARY', category: 'volume', threshold: 500, points: BADGE_POINTS.LEGENDARY },
+  { key: 'degen_king', name: '😈 Degen King', description: '750+ SOL traded', icon: '😈', rarity: 'LEGENDARY', category: 'volume', threshold: 750, points: BADGE_POINTS.LEGENDARY },
+  { key: 'alien_volume', name: '🛸 Alien Volume', description: '1000+ SOL traded', icon: '🛸', rarity: 'MYTHIC', category: 'volume', threshold: 1000, points: BADGE_POINTS.MYTHIC },
+  { key: 'extraterrestrial', name: '👽 Extraterrestrial', description: '2000+ SOL traded', icon: '👽', rarity: 'MYTHIC', category: 'volume', threshold: 2000, points: BADGE_POINTS.MYTHIC },
+  { key: 'god_volume', name: '⚡ Volume God', description: '5000+ SOL traded', icon: '⚡', rarity: 'MYTHIC', category: 'volume', threshold: 5000, points: BADGE_POINTS.MYTHIC },
+];
+&nbsp;
+// ═══════════════════════════════════════════════════════════════
+// PNL (Profit &amp; Loss) (15 badges)
+// ═══════════════════════════════════════════════════════════════
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >PNL_BADGES:</span> BadgeDefinition[] = [
+  // Ganancias
+  { key: 'profit_rookie', name: '💰 Profit Rookie', description: '0.5+ SOL profit', icon: '💰', rarity: 'COMMON', category: 'pnl', threshold: 0.5, points: BADGE_POINTS.COMMON },
+  { key: 'green_trader', name: '💵 Green Trader', description: '1+ SOL profit', icon: '💵', rarity: 'COMMON', category: 'pnl', threshold: 1, points: BADGE_POINTS.COMMON },
+  { key: 'profit_machine', name: '🌿 Profit Machine', description: '3+ SOL profit', icon: '🌿', rarity: 'RARE', category: 'pnl', threshold: 3, points: BADGE_POINTS.RARE },
+  { key: 'energy_trader', name: '🔋 Energy Trader', description: '5+ SOL profit', icon: '🔋', rarity: 'RARE', category: 'pnl', threshold: 5, points: BADGE_POINTS.RARE },
+  { key: 'green_giant', name: '💚 Green Giant', description: '10+ SOL profit', icon: '💚', rarity: 'EPIC', category: 'pnl', threshold: 10, points: BADGE_POINTS.EPIC },
+  { key: 'profit_wizard', name: '🧙‍♂️ Profit Wizard', description: '25+ SOL profit', icon: '🧙‍♂️', rarity: 'EPIC', category: 'pnl', threshold: 25, points: BADGE_POINTS.EPIC },
+  { key: 'eagle_eye', name: '🦅 Eagle Eye', description: '40+ SOL profit', icon: '🦅', rarity: 'LEGENDARY', category: 'pnl', threshold: 40, points: BADGE_POINTS.LEGENDARY },
+  { key: 'green_god', name: '🟢 Green God', description: '75+ SOL profit', icon: '🟢', rarity: 'LEGENDARY', category: 'pnl', threshold: 75, points: BADGE_POINTS.LEGENDARY },
+  { key: 'profit_titan', name: '🧬 Profit Titan', description: '100+ SOL profit', icon: '🧬', rarity: 'MYTHIC', category: 'pnl', threshold: 100, points: BADGE_POINTS.MYTHIC },
+&nbsp;
+  // Pérdidas (humor)
+  { key: 'rug_victim', name: '☠️ Rug Victim', description: '-1 SOL loss', icon: '☠️', rarity: 'COMMON', category: 'pnl', threshold: -1, points: BADGE_POINTS.COMMON },
+  { key: 'rug_survivor', name: '💀 Rug Survivor', description: '-3 SOL loss', icon: '💀', rarity: 'RARE', category: 'pnl', threshold: -3, points: BADGE_POINTS.RARE },
+  { key: 'clown_badge', name: '🤡 Clown', description: '-5 SOL loss', icon: '🤡', rarity: 'RARE', category: 'pnl', threshold: -5, points: BADGE_POINTS.RARE },
+  { key: 'comedy_trader', name: '🎭 Comedy Trader', description: '-10 SOL loss', icon: '🎭', rarity: 'EPIC', category: 'pnl', threshold: -10, points: BADGE_POINTS.EPIC },
+  { key: 'wallet_funeral', name: '🪦 Wallet Funeral', description: '-20 SOL loss', icon: '🪦', rarity: 'LEGENDARY', category: 'pnl', threshold: -20, points: BADGE_POINTS.LEGENDARY },
+  { key: 'nuke_wallet', name: '🧨 Nuked Wallet', description: '-30 SOL loss', icon: '🧨', rarity: 'MYTHIC', category: 'pnl', threshold: -30, points: BADGE_POINTS.MYTHIC },
+];
+&nbsp;
+// ═══════════════════════════════════════════════════════════════
+// WIN RATE (10 badges)
+// ═══════════════════════════════════════════════════════════════
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >WINRATE_BADGES:</span> BadgeDefinition[] = [
+  { key: 'accurate', name: '🎯 Accurate', description: '50%+ win rate', icon: '🎯', rarity: 'COMMON', category: 'winrate', threshold: 50, points: BADGE_POINTS.COMMON },
+  { key: 'sniper', name: '🎖️ Sniper', description: '60%+ win rate', icon: '🎖️', rarity: 'RARE', category: 'winrate', threshold: 60, points: BADGE_POINTS.RARE },
+  { key: 'ice_sniper', name: '🧊 Ice Sniper', description: '70%+ win rate', icon: '🧊', rarity: 'RARE', category: 'winrate', threshold: 70, points: BADGE_POINTS.RARE },
+  { key: 'elite_sniper', name: '🏅 Elite Sniper', description: '75%+ win rate', icon: '🏅', rarity: 'EPIC', category: 'winrate', threshold: 75, points: BADGE_POINTS.EPIC },
+  { key: 'golden_aim', name: '🏆 Golden Aim', description: '80%+ win rate', icon: '🏆', rarity: 'EPIC', category: 'winrate', threshold: 80, points: BADGE_POINTS.EPIC },
+  { key: 'bowmaster', name: '🏹 Bowmaster', description: '85%+ win rate', icon: '🏹', rarity: 'LEGENDARY', category: 'winrate', threshold: 85, points: BADGE_POINTS.LEGENDARY },
+  { key: 'perfect_shot', name: '🔥 Perfect Shot', description: '90%+ win rate', icon: '🔥', rarity: 'LEGENDARY', category: 'winrate', threshold: 90, points: BADGE_POINTS.LEGENDARY },
+  { key: 'zen_trader', name: '⛩️ Zen Trader', description: '95%+ win rate', icon: '⛩️', rarity: 'MYTHIC', category: 'winrate', threshold: 95, points: BADGE_POINTS.MYTHIC },
+  { key: 'god_accuracy', name: '⚜️ God Accuracy', description: '98%+ win rate', icon: '⚜️', rarity: 'MYTHIC', category: 'winrate', threshold: 98, points: BADGE_POINTS.MYTHIC },
+  { key: 'perfect_trader', name: '⭐ Perfect', description: '100% win rate', icon: '⭐', rarity: 'MYTHIC', category: 'winrate', threshold: 100, points: BADGE_POINTS.MYTHIC },
+];
+&nbsp;
+// ═══════════════════════════════════════════════════════════════
+// ACTIVIDAD (10 badges)
+// ═══════════════════════════════════════════════════════════════
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >ACTIVITY_BADGES:</span> BadgeDefinition[] = [
+  { key: 'active_trader', name: '📈 Active Trader', description: '100+ trades', icon: '📈', rarity: 'COMMON', category: 'activity', threshold: 100, points: BADGE_POINTS.COMMON },
+  { key: 'volume_king', name: '👑 Volume King', description: '500+ trades', icon: '👑', rarity: 'RARE', category: 'activity', threshold: 500, points: BADGE_POINTS.RARE },
+  { key: 'consistent_trader', name: '📅 Consistent', description: '30+ days trading', icon: '📅', rarity: 'RARE', category: 'activity', threshold: 30, points: BADGE_POINTS.RARE },
+  { key: 'moonshot_hunter', name: '🚀 Moonshot Hunter', description: '5+ big wins', icon: '🚀', rarity: 'EPIC', category: 'activity', threshold: 5, points: BADGE_POINTS.EPIC },
+  { key: 'trading_veteran', name: '🎖️ Veteran', description: '1000+ trades', icon: '🎖️', rarity: 'EPIC', category: 'activity', threshold: 1000, points: BADGE_POINTS.EPIC },
+  { key: 'diamond_hands', name: '💎🙌 Diamond Hands', description: '10+ long holds', icon: '💎', rarity: 'LEGENDARY', category: 'activity', threshold: 10, points: BADGE_POINTS.LEGENDARY },
+  { key: 'trading_machine', name: '🤖 Trading Machine', description: '2000+ trades', icon: '🤖', rarity: 'LEGENDARY', category: 'activity', threshold: 2000, points: BADGE_POINTS.LEGENDARY },
+  { key: 'immortal_trader', name: '⚡ Immortal', description: '90+ days trading', icon: '⚡', rarity: 'MYTHIC', category: 'activity', threshold: 90, points: BADGE_POINTS.MYTHIC },
+  { key: 'degen_god', name: '😈 Degen God', description: '5000+ trades', icon: '😈', rarity: 'MYTHIC', category: 'activity', threshold: 5000, points: BADGE_POINTS.MYTHIC },
+  { key: 'eternal_degen', name: '👑 Eternal Degen', description: '365+ days trading', icon: '👑', rarity: 'MYTHIC', category: 'activity', threshold: 365, points: BADGE_POINTS.MYTHIC },
+];
+&nbsp;
+// ═══════════════════════════════════════════════════════════════
+// SOCIAL / REFERIDOS (5 badges)
+// ═══════════════════════════════════════════════════════════════
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >SOCIAL_BADGES:</span> BadgeDefinition[] = [
+  { key: 'networker', name: '🤝 Networker', description: '1+ referral', icon: '🤝', rarity: 'COMMON', category: 'social', threshold: 1, points: BADGE_POINTS.COMMON },
+  { key: 'influencer', name: '📢 Influencer', description: '5+ referrals', icon: '📢', rarity: 'RARE', category: 'social', threshold: 5, points: BADGE_POINTS.RARE },
+  { key: 'viral_trader', name: '🔥 Viral Trader', description: '10+ referrals', icon: '🔥', rarity: 'EPIC', category: 'social', threshold: 10, points: BADGE_POINTS.EPIC },
+  { key: 'mega_influencer', name: '🌟 Mega Influencer', description: '25+ referrals', icon: '🌟', rarity: 'LEGENDARY', category: 'social', threshold: 25, points: BADGE_POINTS.LEGENDARY },
+  { key: 'ambassador', name: '👑 Ambassador', description: '50+ referrals', icon: '👑', rarity: 'MYTHIC', category: 'social', threshold: 50, points: BADGE_POINTS.MYTHIC },
+];
+&nbsp;
+// ═══════════════════════════════════════════════════════════════
+// PREMIUM (5 badges)
+// ═══════════════════════════════════════════════════════════════
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >PREMIUM_BADGES:</span> BadgeDefinition[] = [
+  { key: 'premium_trader', name: '💎 Premium', description: 'Premium member', icon: '💎', rarity: 'RARE', category: 'premium', points: BADGE_POINTS.RARE },
+  { key: 'logo_pro', name: '🎨 Logo Pro', description: 'Custom logo', icon: '🎨', rarity: 'RARE', category: 'premium', points: BADGE_POINTS.RARE },
+  { key: 'social_flex', name: '🐦 Social Flex', description: 'Linked Twitter', icon: '🐦', rarity: 'COMMON', category: 'premium', points: BADGE_POINTS.COMMON },
+  { key: 'telegram_verified', name: '✈️ Telegram', description: 'Linked Telegram', icon: '✈️', rarity: 'COMMON', category: 'premium', points: BADGE_POINTS.COMMON },
+  { key: 'full_profile', name: '⭐ Full Profile', description: 'Complete profile', icon: '⭐', rarity: 'EPIC', category: 'premium', points: BADGE_POINTS.EPIC },
+];
+&nbsp;
+// ═══════════════════════════════════════════════════════════════
+// TODOS LOS BADGES COMBINADOS
+// ═══════════════════════════════════════════════════════════════
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >ALL_BADGES:</span> BadgeDefinition[] = [
+  ...VOLUME_BADGES,
+  ...PNL_BADGES,
+  ...WINRATE_BADGES,
+  ...ACTIVITY_BADGES,
+  ...SOCIAL_BADGES,
+  ...PREMIUM_BADGES,
+];
+&nbsp;
+// ═══════════════════════════════════════════════════════════════
+// FUNCIONES DE CHECKING
+// ═══════════════════════════════════════════════════════════════
+&nbsp;
+interface CardMetrics {
+  totalVolume: number;
+  profitLoss: number;
+  winRate: number;
+  totalTrades: number;
+  tradingDays: number;
+  moonshots: number;
+  diamondHands: number;
+  isPaid: boolean;
+  twitter?: string | null;
+  telegram?: string | null;
+  profileImage?: string | null;
+  displayName?: string | null;
+}
+&nbsp;
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >calculateBadgePoints(</span></span>badges: BadgeDefinition[]): number {
+<span class="cstat-no" title="statement not covered" >  return badges.reduce(<span class="fstat-no" title="function not covered" >(t</span>otal, badge) =&gt; <span class="cstat-no" title="statement not covered" >total + badge.points,</span> 0);</span>
+}
+&nbsp;
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >checkVolumeBadges(</span></span>metrics: CardMetrics): BadgeDefinition[] {
+<span class="cstat-no" title="statement not covered" >  return VOLUME_BADGES.filter(<span class="fstat-no" title="function not covered" >badge =&gt; <span class="cstat-no" title="statement not covered" >m</span>etrics.totalVolume &gt;= (badge.threshold || 0));</span></span>
+}
+&nbsp;
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >checkPnlBadges(</span></span>metrics: CardMetrics): BadgeDefinition[] {
+<span class="cstat-no" title="statement not covered" >  return PNL_BADGES.filter(<span class="fstat-no" title="function not covered" >badge =&gt; {</span></span>
+    const threshold = <span class="cstat-no" title="statement not covered" >badge.threshold || 0;</span>
+<span class="cstat-no" title="statement not covered" >    if (threshold &lt; 0) {</span>
+      // Badges de pérdidas
+<span class="cstat-no" title="statement not covered" >      return metrics.profitLoss &lt;= threshold;</span>
+    } else {
+      // Badges de ganancias
+<span class="cstat-no" title="statement not covered" >      return metrics.profitLoss &gt;= threshold;</span>
+    }
+  });
+}
+&nbsp;
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >checkWinRateBadges(</span></span>metrics: CardMetrics): BadgeDefinition[] {
+<span class="cstat-no" title="statement not covered" >  return WINRATE_BADGES.filter(<span class="fstat-no" title="function not covered" >badge =&gt; <span class="cstat-no" title="statement not covered" >m</span>etrics.winRate &gt;= (badge.threshold || 0));</span></span>
+}
+&nbsp;
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >checkActivityBadges(</span></span>metrics: CardMetrics): BadgeDefinition[] {
+  const badges: BadgeDefinition[] = <span class="cstat-no" title="statement not covered" >[];</span>
+&nbsp;
+  // Badges basados en total trades
+  const tradeBadges = <span class="cstat-no" title="statement not covered" >[</span>
+    { key: 'active_trader', threshold: 100 },
+    { key: 'volume_king', threshold: 500 },
+    { key: 'trading_veteran', threshold: 1000 },
+    { key: 'trading_machine', threshold: 2000 },
+    { key: 'degen_god', threshold: 5000 },
+  ];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  tradeBadges.forEach(<span class="fstat-no" title="function not covered" >({</span> key, threshold }) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.totalTrades &gt;= threshold) {</span>
+      const badge = <span class="cstat-no" title="statement not covered" >ACTIVITY_BADGES.find(<span class="fstat-no" title="function not covered" >b =&gt; <span class="cstat-no" title="statement not covered" >b</span>.key === key);</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (badge) <span class="cstat-no" title="statement not covered" >badges.push(badge);</span></span>
+    }
+  });
+&nbsp;
+  // Badges basados en días de trading
+  const dayBadges = <span class="cstat-no" title="statement not covered" >[</span>
+    { key: 'consistent_trader', threshold: 30 },
+    { key: 'immortal_trader', threshold: 90 },
+    { key: 'eternal_degen', threshold: 365 },
+  ];
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  dayBadges.forEach(<span class="fstat-no" title="function not covered" >({</span> key, threshold }) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.tradingDays &gt;= threshold) {</span>
+      const badge = <span class="cstat-no" title="statement not covered" >ACTIVITY_BADGES.find(<span class="fstat-no" title="function not covered" >b =&gt; <span class="cstat-no" title="statement not covered" >b</span>.key === key);</span></span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (badge) <span class="cstat-no" title="statement not covered" >badges.push(badge);</span></span>
+    }
+  });
+&nbsp;
+  // Moonshot hunter
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.moonshots &gt;= 5) {</span>
+    const badge = <span class="cstat-no" title="statement not covered" >ACTIVITY_BADGES.find(<span class="fstat-no" title="function not covered" >b =&gt; <span class="cstat-no" title="statement not covered" >b</span>.key === 'moonshot_hunter');</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (badge) <span class="cstat-no" title="statement not covered" >badges.push(badge);</span></span>
+  }
+&nbsp;
+  // Diamond hands
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.diamondHands &gt;= 10) {</span>
+    const badge = <span class="cstat-no" title="statement not covered" >ACTIVITY_BADGES.find(<span class="fstat-no" title="function not covered" >b =&gt; <span class="cstat-no" title="statement not covered" >b</span>.key === 'diamond_hands');</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (badge) <span class="cstat-no" title="statement not covered" >badges.push(badge);</span></span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return badges;</span>
+}
+&nbsp;
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >checkPremiumBadges(</span></span>metrics: CardMetrics): BadgeDefinition[] {
+  const badges: BadgeDefinition[] = <span class="cstat-no" title="statement not covered" >[];</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.isPaid) {</span>
+    const premiumBadge = <span class="cstat-no" title="statement not covered" >PREMIUM_BADGES.find(<span class="fstat-no" title="function not covered" >b =&gt; <span class="cstat-no" title="statement not covered" >b</span>.key === 'premium_trader');</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (premiumBadge) <span class="cstat-no" title="statement not covered" >badges.push(premiumBadge);</span></span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.twitter) {</span>
+    const twitterBadge = <span class="cstat-no" title="statement not covered" >PREMIUM_BADGES.find(<span class="fstat-no" title="function not covered" >b =&gt; <span class="cstat-no" title="statement not covered" >b</span>.key === 'social_flex');</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (twitterBadge) <span class="cstat-no" title="statement not covered" >badges.push(twitterBadge);</span></span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.telegram) {</span>
+    const telegramBadge = <span class="cstat-no" title="statement not covered" >PREMIUM_BADGES.find(<span class="fstat-no" title="function not covered" >b =&gt; <span class="cstat-no" title="statement not covered" >b</span>.key === 'telegram_verified');</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (telegramBadge) <span class="cstat-no" title="statement not covered" >badges.push(telegramBadge);</span></span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.profileImage) {</span>
+    const logoBadge = <span class="cstat-no" title="statement not covered" >PREMIUM_BADGES.find(<span class="fstat-no" title="function not covered" >b =&gt; <span class="cstat-no" title="statement not covered" >b</span>.key === 'logo_pro');</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (logoBadge) <span class="cstat-no" title="statement not covered" >badges.push(logoBadge);</span></span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  <span class="missing-if-branch" title="if path not taken" >I</span>if (metrics.isPaid &amp;&amp; metrics.twitter &amp;&amp; metrics.telegram &amp;&amp; metrics.profileImage &amp;&amp; metrics.displayName) {</span>
+    const fullProfileBadge = <span class="cstat-no" title="statement not covered" >PREMIUM_BADGES.find(<span class="fstat-no" title="function not covered" >b =&gt; <span class="cstat-no" title="statement not covered" >b</span>.key === 'full_profile');</span></span>
+<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (fullProfileBadge) <span class="cstat-no" title="statement not covered" >badges.push(fullProfileBadge);</span></span>
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return badges;</span>
+}
+&nbsp;
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >checkAllBadges(</span></span>metrics: CardMetrics): { badges: BadgeDefinition[]; totalPoints: number } {
+  const allUnlockedBadges: BadgeDefinition[] = <span class="cstat-no" title="statement not covered" >[</span>
+    ...checkVolumeBadges(metrics),
+    ...checkPnlBadges(metrics),
+    ...checkWinRateBadges(metrics),
+    ...checkActivityBadges(metrics),
+    ...checkPremiumBadges(metrics),
+  ];
+&nbsp;
+  // Remover duplicados por key
+  const uniqueBadges = <span class="cstat-no" title="statement not covered" >Array.from(</span>
+    new Map(allUnlockedBadges.map(<span class="fstat-no" title="function not covered" >badge =&gt; <span class="cstat-no" title="statement not covered" >[</span>badge.key, badge])).v</span>alues()
+  );
+&nbsp;
+  const totalPoints = <span class="cstat-no" title="statement not covered" >calculateBadgePoints(uniqueBadges);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    badges: uniqueBadges,
+    totalPoints,
+  };
+}
+&nbsp;
+// Helper para obtener color según rarity
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getBadgeColor(</span></span>rarity: BadgeRarity): string {
+  const colors = <span class="cstat-no" title="statement not covered" >{</span>
+    COMMON: 'text-gray-400',
+    RARE: 'text-blue-400',
+    EPIC: 'text-purple-400',
+    LEGENDARY: 'text-yellow-400',
+    MYTHIC: 'text-pink-400',
+  };
+<span class="cstat-no" title="statement not covered" >  return colors[rarity];</span>
+}
+&nbsp;
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getBadgeGlow(</span></span>rarity: BadgeRarity): string {
+  const glows = <span class="cstat-no" title="statement not covered" >{</span>
+    COMMON: 'shadow-gray-500/20',
+    RARE: 'shadow-blue-500/40',
+    EPIC: 'shadow-purple-500/60',
+    LEGENDARY: 'shadow-yellow-500/80',
+    MYTHIC: 'shadow-pink-500/100',
+  };
+<span class="cstat-no" title="statement not covered" >  return glows[rarity];</span>
+}
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2025-11-24T09:55:15.446Z
+            </div>
+        <script src="../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
+    </body>
+</html>
+    

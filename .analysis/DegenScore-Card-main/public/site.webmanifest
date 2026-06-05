@@ -1,0 +1,24 @@
+{
+    "name": "DegenScore",
+    "short_name": "DegenScore",
+    "description": "Analyze Your Solana Trading History - Are you a Legend or a Degen?",
+    "icons": [
+        {
+            "src": "/og-image.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "theme_color": "#7C3AED",
+    "background_color": "#0F172A",
+    "display": "standalone",
+    "start_url": "/",
+    "scope": "/",
+    "orientation": "portrait-primary",
+    "categories": [
+        "finance",
+        "cryptocurrency",
+        "trading"
+    ]
+}

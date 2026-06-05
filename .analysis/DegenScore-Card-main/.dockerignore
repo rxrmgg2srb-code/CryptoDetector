@@ -1,0 +1,44 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Testing
+coverage
+.nyc_output
+
+# Next.js
+.next
+out
+dist
+
+# Production
+build
+
+# Misc
+.DS_Store
+*.pem
+
+# Debug
+.vscode
+.idea
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# CI/CD
+.github
+
+# Vercel
+.vercel

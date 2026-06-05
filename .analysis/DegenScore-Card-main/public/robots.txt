@@ -1,0 +1,24 @@
+# Robots.txt for DegenScore
+# https://www.robotstxt.org/robotstxt.html
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /admin/
+
+# Disallow dynamic image generation (too heavy for crawlers)
+Disallow: /api/generate-card
+Disallow: /api/og-image
+
+# Allow specific public APIs for indexing
+Allow: /api/leaderboard
+Allow: /api/current-challenge
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://degenscore.app/sitemap.xml

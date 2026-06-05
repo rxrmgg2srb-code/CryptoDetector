@@ -1,0 +1,167 @@
+{
+  "nav": {
+    "home": "Home",
+    "leaderboard": "Leaderboard",
+    "documentation": "Documentation",
+    "connect_wallet": "Connect Wallet",
+    "disconnect": "Disconnect"
+  },
+  "hero": {
+    "title": "Your Solana Trading Identity",
+    "subtitle": "Analyze your wallet, generate your DegenScore Card and compete on the global leaderboard",
+    "cta": "Generate My Card Free",
+    "stats": {
+      "cards": "Cards Generated",
+      "volume": "Total Volume",
+      "users": "Active Users"
+    }
+  },
+  "card": {
+    "degen_score": "DegenScore",
+    "total_trades": "Total Trades",
+    "win_rate": "Win Rate",
+    "total_volume": "Total Volume",
+    "profit_loss": "Total P&L",
+    "best_trade": "Best Trade",
+    "worst_trade": "Worst Trade",
+    "rugs_survived": "Rugs Survived",
+    "moonshots": "Moonshots",
+    "diamond_hands": "Diamond Hands",
+    "quick_flips": "Quick Flips",
+    "level": "Level",
+    "badges": "Badges"
+  },
+  "tiers": {
+    "free": "Free",
+    "premium": "Premium",
+    "pro": "Pro",
+    "current": "Current Tier",
+    "upgrade": "Upgrade to Premium",
+    "features": {
+      "basic_card": "Basic Card",
+      "metrics": "30+ Metrics",
+      "badges": "Badge System",
+      "leaderboard": "View Leaderboard",
+      "custom_profile": "Custom Profile",
+      "downloadable": "Downloadable HD Card",
+      "checkin": "Daily Check-In",
+      "referrals": "Referral System",
+      "challenges": "Weekly Challenges",
+      "alpha_feed": "Alpha Feed",
+      "advanced_dashboard": "Advanced Dashboard",
+      "priority_support": "Priority Support"
+    }
+  },
+  "checkin": {
+    "title": "Daily Check-In",
+    "streak": "Streak",
+    "days": "days",
+    "button": "Check In Now",
+    "xp_reward": "+{{xp}} XP",
+    "already_checked": "Already checked in today! Come back tomorrow",
+    "next_milestone": "Next Milestone",
+    "total_xp": "Total XP"
+  },
+  "referrals": {
+    "title": "Referral System",
+    "invite": "Invite Friends and Earn",
+    "your_link": "Your Referral Link",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "total": "Total Referrals",
+    "paid": "Paid Referrals",
+    "pending": "Pending",
+    "rewards": {
+      "tier1": "3 referrals → 'Influencer' Badge + 1 month PRO",
+      "tier2": "10 referrals → 'Whale Hunter' Badge + 0.1 SOL",
+      "tier3": "25 referrals → 'Viral King' Badge + 3 months PRO + 0.3 SOL",
+      "tier4": "50 referrals → 'Legend' Badge + VIP Lifetime + 1 SOL"
+    },
+    "claim": "Claim Rewards"
+  },
+  "challenges": {
+    "title": "Weekly Challenge",
+    "prize": "Prize: 1 SOL",
+    "ends_in": "Ends in",
+    "current": "Current Challenge: Most Likes",
+    "participate": "Participate",
+    "premium_only": "PREMIUM and PRO users only",
+    "description": "Get the most likes on your card and win 1 SOL",
+    "min_cards": "Activates when we reach {{count}} cards"
+  },
+  "leaderboard": {
+    "title": "Global Leaderboard",
+    "rank": "Rank",
+    "wallet": "Wallet",
+    "score": "Score",
+    "volume": "Volume",
+    "win_rate": "Win Rate",
+    "likes": "Likes",
+    "filter": {
+      "all": "All",
+      "score": "By Score",
+      "volume": "By Volume",
+      "winrate": "By Win Rate",
+      "likes_count": "By Likes"
+    }
+  },
+  "activity": {
+    "title": "Live Activity",
+    "actions": {
+      "upgrade": "upgraded to PREMIUM",
+      "moonshot": "caught a moonshot",
+      "leaderboard": "climbed to #{{rank}}",
+      "referral": "referred {{count}} new degen",
+      "share": "shared their card",
+      "checkin": "{{streak}}-day streak"
+    }
+  },
+  "scarcity": {
+    "title": "Only {{spots}} Premium Slots Remaining",
+    "price_increase": "Price increases from {{current}} SOL → {{next}} SOL in {{users}} users",
+    "secure_spot": "Secure My Spot →",
+    "almost_sold": "ALMOST SOLD OUT!"
+  },
+  "documentation": {
+    "title": "Documentation",
+    "back": "← Back to Home",
+    "contents": "Contents",
+    "sections": {
+      "intro": "Introduction",
+      "getting_started": "Getting Started",
+      "generate_card": "Generate Your Card",
+      "understand_metrics": "Understand Metrics",
+      "badges": "Badge System",
+      "upgrade": "Upgrade to Premium",
+      "daily_checkin": "Daily Check-In",
+      "referrals": "Referral System",
+      "challenges": "Weekly Challenges",
+      "hot_feed": "Alpha Feed",
+      "leaderboard": "Leaderboard",
+      "tiers": "Tiers & Benefits",
+      "faq": "FAQ"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "share": "Share",
+    "download": "Download",
+    "view_more": "View More",
+    "see_all": "See All"
+  },
+  "errors": {
+    "wallet_not_connected": "Wallet not connected",
+    "invalid_wallet": "Invalid wallet",
+    "transaction_failed": "Transaction failed",
+    "server_error": "Server error",
+    "try_again": "Try again"
+  }
+}

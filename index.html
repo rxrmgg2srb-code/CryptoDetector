@@ -1,0 +1,345 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dormant Token Detector - Solana Pre-Trending Scanner</title>
+    <meta name="description" content="Detecta tokens dormidos en Solana antes de que aparezcan en trending. Encuentra pumps antes que Axiom.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=35">
+</head>
+<body>
+    <div id="particles-bg"></div>
+
+    <!-- Header -->
+    <header id="app-header">
+        <div class="header-left">
+            <div class="logo">
+                <span class="logo-icon">DD</span>
+                <div class="logo-text">
+                    <h1>Dormant Detector <span style="font-size:11px;color:var(--accent);font-weight:400;">v5</span></h1>
+                    <span class="logo-subtitle">Pre-Trending Scanner - Solana</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-stats">
+            <div class="stat-card" id="stat-scanned">
+                <span class="stat-value">0</span>
+                <span class="stat-label">Escaneados</span>
+            </div>
+            <div class="stat-card" id="stat-dormant">
+                <span class="stat-value">0</span>
+                <span class="stat-label">Dormidos</span>
+            </div>
+            <div class="stat-card awakening" id="stat-awakening">
+                <span class="stat-value">0</span>
+                <span class="stat-label">Despertando</span>
+            </div>
+            <div class="stat-card alert" id="stat-alerts">
+                <span class="stat-value">0</span>
+                <span class="stat-label">Alertas</span>
+            </div>
+            <div class="stat-card clone" id="stat-clones">
+                <span class="stat-value">0</span>
+                <span class="stat-label">Clones</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <button id="btn-wallet" class="btn-wallet" onclick="window.app.openWalletModal()">
+                <span class="wallet-icon">Wallet</span>
+                <span id="wallet-btn-text" class="wallet-btn-label">Conectar Wallet</span>
+            </button>
+            <div id="ws-status" class="ws-indicator ws-disconnected" title="WebSocket: Desconectado">
+                <span class="ws-dot ws-dot-off"></span> WS OFF
+            </div>
+            <div class="scanner-status" id="scanner-status">
+                <span class="status-dot"></span>
+                <span class="status-text">Detenido</span>
+            </div>
+            <button id="btn-scan" class="btn-primary" onclick="window.app.toggleScanner()">
+                <span class="btn-icon">a</span> Iniciar Scanner
+            </button>
+        </div>
+    </header>
+
+    <!-- Wallet Modal -->
+    <div id="wallet-modal" class="wallet-modal-overlay hidden">
+        <div class="wallet-modal">
+            <div class="wallet-modal-header">
+                <div class="wallet-modal-title">
+                    <span class="wallet-modal-icon">Wallet</span>
+                    <div>
+                        <h3>Trading Wallet</h3>
+                        <span class="wallet-modal-sub">Jito MEV - Compra instantanea sin popups</span>
+                    </div>
+                </div>
+                <button class="wallet-modal-close" onclick="window.app.closeWalletModal()">x</button>
+            </div>
+
+            <div class="wallet-modal-body">
+                <!-- Vista desconectada -->
+                <div id="wallet-disconnected-view">
+                    <div class="wallet-info-banner">
+                        <span>SAFE</span>
+                        <p>Importa la clave privada de una <strong>wallet dedicada</strong> con poco SOL. Tu clave se guarda encriptada solo en este navegador.</p>
+                    </div>
+                    <div class="wallet-input-group">
+                        <label>Clave Privada</label>
+                        <div class="wallet-input-wrap">
+                            <input type="password" id="wallet-pk-input" placeholder="Base58 o [12,34,...] formato JSON" class="wallet-input">
+                            <button class="wallet-toggle-eye" onclick="const i=document.getElementById('wallet-pk-input');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'Show':'Hide'">Show</button>
+                        </div>
+                    </div>
+                    <button class="wallet-btn-import" onclick="window.app.importWallet()">
+                        <span>KEY</span> Importar Wallet
+                    </button>
+                </div>
+
+                <!-- Vista conectada -->
+                <div id="wallet-connected-view" class="hidden">
+                    <div class="wallet-balance-card">
+                        <div class="wallet-balance-label">Balance</div>
+                        <div class="wallet-balance-amount" id="wallet-balance-text">0.00 SOL</div>
+                        <div class="wallet-pubkey" id="wallet-pubkey-text" onclick="navigator.clipboard.writeText(this.dataset.full);this.textContent='a... Copiado!';setTimeout(()=>this.textContent=this.dataset.short,1500)">---</div>
+                    </div>
+
+                    <div class="wallet-settings">
+                        <h4>Ajustes de Compra Rapida</h4>
+                        <div class="wallet-settings-grid">
+                            <div class="wallet-setting">
+                                <label>SOL por trade</label>
+                                <input type="number" id="trade-amount" value="0.1" step="0.05" min="0.01" class="wallet-input-sm">
+                            </div>
+                            <div class="wallet-setting">
+                                <label>Slippage %</label>
+                                <input type="number" id="trade-slippage" value="15" step="1" min="1" class="wallet-input-sm">
+                            </div>
+                            <div class="wallet-setting">
+                                <label>Jito Tip</label>
+                                <input type="number" id="trade-jito-tip" value="0.002" step="0.001" min="0.001" class="wallet-input-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="wallet-btn-disconnect" onclick="window.app.disconnectWallet()">
+                        Desconectar y Borrar Clave
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div id="controls-bar">
+        <div class="controls-left">
+            <div class="filter-group">
+                <label>Market Cap MAx</label>
+                <select id="filter-mcap">
+                    <option value="5000">< $5K</option>
+                    <option value="10000">< $10K</option>
+                    <option value="25000">< $25K</option>
+                    <option value="50000">< $50K</option>
+                    <option value="100000">< $100K</option>
+                    <option value="500000">< $500K</option>
+                    <option value="1000000">< $1M</option>
+                    <option value="0" selected>Sin lAmite</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Horas Dormido Min</label>
+                <select id="filter-dormant-hours">
+                    <option value="0">Sin minimo</option>
+                    <option value="24" selected>24h+</option>
+                    <option value="48">48h+</option>
+                    <option value="72">72h+</option>
+                    <option value="111">111h+</option>
+                    <option value="168">168h+ (1w)</option>
+                    <option value="336">336h+ (2w)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Score Minimo</label>
+                <select id="filter-min-score">
+                    <option value="0" selected>Todos</option>
+                    <option value="30">30+</option>
+                    <option value="50">50+</option>
+                    <option value="70">70+</option>
+                    <option value="85">85+</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Objetivo Min</label>
+                <select id="filter-min-pump-target">
+                    <option value="0">Sin min</option>
+                    <option value="100" selected>2x+</option>
+                    <option value="200">3x+</option>
+                    <option value="400">5x+</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Min Holders</label>
+                <select id="filter-min-holders">
+                    <option value="0" selected>Sin min</option>
+                    <option value="5">5+</option>
+                    <option value="10">10+</option>
+                    <option value="15">15+</option>
+                    <option value="20">20+</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Ordenar por</label>
+                <select id="filter-sort">
+                    <option value="score" selected>Score desc</option>
+                    <option value="vol5m">Vol 5m desc</option>
+                    <option value="convergence">Convergencia desc</option>
+                    <option value="volume_spike">Vol Spike desc</option>
+                    <option value="buy_ratio">Buy Ratio desc</option>
+                    <option value="dormant_hours">Dormido desc</option>
+                    <option value="mcap">MCap asc</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Subida 5m Min</label>
+                <select id="filter-price-m5">
+                    <option value="0">Sin min</option>
+                    <option value="10" selected>+10%</option>
+                    <option value="15">+15%</option>
+                    <option value="20">+20% FAST</option>
+                    <option value="40">+40%</option>
+                    <option value="50">+50%</option>
+                    <option value="100">+100%</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>MCap Min</label>
+                <select id="filter-min-mcap">
+                    <option value="0">Sin min</option>
+                    <option value="1000">$1K+</option>
+                    <option value="2000" selected>$2K+ FAST</option>
+                    <option value="5000">$5K+</option>
+                    <option value="10000">$10K+</option>
+                    <option value="25000">$25K+</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Vol 5m Min</label>
+                <select id="filter-min-vol5m">
+                    <option value="0">Sin min</option>
+                    <option value="100" selected>$100+</option>
+                    <option value="250">$250+</option>
+                    <option value="500">$500+ HOT</option>
+                    <option value="1000">$1K+</option>
+                    <option value="2500">$2.5K+</option>
+                    <option value="5000">$5K+</option>
+                    <option value="10000">$10K+</option>
+                </select>
+            </div>
+            <div class="filter-group" style="display:flex;align-items:flex-end;gap:6px;">
+                <label class="toggle-label" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 10px;background:var(--bg-secondary);border:1px solid var(--accent);border-radius:var(--radius-sm);font-size:11px;font-weight:600;color:var(--accent);">
+                    <input type="checkbox" id="filter-subiendo" checked style="accent-color:var(--accent);width:14px;height:14px;">
+                    Subiendo
+                </label>
+                <label class="toggle-label" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 10px;background:var(--bg-secondary);border:1px solid var(--alert);border-radius:var(--radius-sm);font-size:11px;font-weight:600;color:var(--alert);">
+                    <input type="checkbox" id="filter-hide-rug" checked style="accent-color:var(--alert);width:14px;height:14px;">
+                    Anti-Rug
+                </label>
+            </div>
+        </div>
+        <div class="controls-right">
+            <button class="btn-secondary" onclick="window.app.clearBlacklist()">Clear Blacklist</button>
+            <button class="btn-secondary" onclick="window.app.clearHistory()">Limpiar</button>
+            <button class="btn-secondary" onclick="window.app.exportCSV()">CSV</button>
+            <button class="btn-secondary" onclick="window.app.exportPerformanceCSV()">Signal CSV</button>
+            <span class="scan-timer" id="scan-timer">Proximo scan: --</span>
+        </div>
+    </div>
+
+    <!-- Commercial validation metrics -->
+    <div id="performance-bar">
+        <div class="perf-item"><span class="perf-value" id="perf-total">0</span><span class="perf-label">Signals</span></div>
+        <div class="perf-item"><span class="perf-value" id="perf-confirmed">0</span><span class="perf-label">Confirmed</span></div>
+        <div class="perf-item"><span class="perf-value" id="perf-hit2x">0%</span><span class="perf-label">2x Hit</span></div>
+        <div class="perf-item"><span class="perf-value" id="perf-confirmed-hit2x">0%</span><span class="perf-label">Confirmed 2x</span></div>
+        <div class="perf-item"><span class="perf-value" id="perf-hit5x">0</span><span class="perf-label">5x+</span></div>
+    </div>
+
+    <!-- Alert Banner -->
+    <div id="alert-banner" class="hidden">
+        <span class="alert-icon">ALERT</span>
+        <span class="alert-text" id="alert-text"></span>
+        <button class="alert-dismiss" onclick="document.getElementById('alert-banner').classList.add('hidden')">x</button>
+    </div>
+
+    <!-- Alert History -->
+    <div class="alert-history-container" id="alert-history-wrap">
+        <div id="alert-history"></div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <div id="token-table-container">
+            <div class="table-header">
+                <span class="th-score">Score</span>
+                <span class="th-token">Token</span>
+                <span class="th-viewers">View</span>
+                <span class="th-sparkline">Chart</span>
+                <span class="th-price">Precio</span>
+                <span class="th-change">5m %</span>
+                <span class="th-mcap">MCap</span>
+                <span class="th-liq">Vol5m</span>
+                <span class="th-pump">Est. up</span>
+                <span class="th-buys">Buys/Sells</span>
+                <span class="th-holders">Holders</span>
+                <span class="th-age">Edad</span>
+                <span class="th-signals">Senales</span>
+                <span class="th-actions">Acciones</span>
+            </div>
+            <div id="token-list">
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon">DD</div>
+                    <h3>GOD MODE - 20+ APIs | Scan 6s | +10% 5m</h3>
+                    <p>Pulsa <strong>"Iniciar Scanner"</strong> - PumpSwap + Pump.fun + GeckoTerminal + Helius + DexScreener + WebSocket</p>
+                    <p class="empty-hint">Cobertura total: 3 DEX on-chain + 10 endpoints Gecko + 150 Pump.fun live + WS 3 programas</p>
+                </div>
+            </div>
+        </div>
+
+        <aside id="detail-sidebar" class="hidden">
+            <button class="sidebar-close" onclick="window.app.closeSidebar()">x</button>
+            <div id="sidebar-content"></div>
+        </aside>
+    </main>
+
+    <!-- Scan Log -->
+    <div id="scan-log-container">
+        <div class="log-header" onclick="document.getElementById('scan-log-container').classList.toggle('expanded')">
+            <span>Scan Log</span>
+            <span class="log-toggle">a14</span>
+        </div>
+        <div id="scan-log" class="log-content">
+            <div class="log-entry info">Sistema v5 iniciado. WebSocket LIVE + Multi-fuente. Esperando para escanear...</div>
+        </div>
+    </div>
+
+    <audio id="alert-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgkKullWA0NWCRqqmWYTU1YJKqqZZhNTVglKuslmI2NWCUq6uWYjY1YJWsrJdiNjVgl62slmI2NWCXrayWYjY1YJiurJZiNjVgma+slmI2NWCar6yWYzY1YJuvrJZjNjVgm6+slmM2NWCbr6yWYzY1YJuvrJZjNjVgm6+slmM2NWCar6yWYzY1YJqvrJZjNjVgma6slmM2NWCZrqyWYzY1YJiurJZjNjVgl62slmM2NWCXrayXYzY1YJasrJdjNzVglqyslmM3NWCVq6yXYzc0YJWrrJdjNzRglausl2M3NGCUqqyXYzc0YJSqrJdjNzRglKqsl2M3NGCUqqyXYzg0YA==" type="audio/wav">
+    </audio>
+
+
+    <script src="jito.js?v=35"></script>
+    <script src="helius.js?v=35"></script>
+    <script src="websocket.js?v=35"></script>
+    <script src="detector.js?v=35"></script>
+    <script src="scanner.js?v=35"></script>
+    <script src="performance.js?v=35"></script>
+    <script src="ui.js?v=35"></script>
+    <script src="app.js?v=35"></script>
+</body>
+</html>
+
+
+
+
+

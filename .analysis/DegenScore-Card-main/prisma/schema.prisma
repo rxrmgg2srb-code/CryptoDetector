@@ -1,0 +1,852 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model DegenCard {
+  id              String    @id @default(cuid())
+  walletAddress   String    @unique
+  referralCode    String    @unique @default(uuid()) // código que el usuario comparte
+  
+  // Métricas básicas
+  degenScore      Int
+  totalTrades     Int
+  totalVolume     Float
+  profitLoss      Float
+  winRate         Float
+  bestTrade       Float
+  worstTrade      Float
+  avgTradeSize    Float
+  totalFees       Float
+  tradingDays     Int
+  level           Int
+  xp              Int
+  
+  // Métricas avanzadas
+  rugsSurvived    Int       @default(0)
+  rugsCaught      Int       @default(0)
+  totalRugValue   Float     @default(0)
+  moonshots       Int       @default(0)
+  avgHoldTime     Float     @default(0)
+  quickFlips      Int       @default(0)
+  diamondHands    Int       @default(0)
+  realizedPnL     Float     @default(0)
+  unrealizedPnL   Float     @default(0)
+  firstTradeDate  DateTime?
+  longestWinStreak Int      @default(0)
+  longestLossStreak Int     @default(0)
+  volatilityScore Float     @default(0)
+  
+  // Datos sociales/perfil
+  displayName     String?
+  twitter         String?
+  telegram        String?
+  profileImage    String?
+
+  // Daily Streaks & Engagement
+  lastCheckIn     DateTime?
+  streakDays      Int       @default(0)
+  totalXP         Int       @default(0)
+  longestStreak   Int       @default(0)
+
+  // Estado
+  isMinted        Boolean   @default(false)
+  isPaid          Boolean   @default(false)
+  mintedAt        DateTime  @default(now())
+  lastSeen        DateTime  @default(now())
+  
+  // Timestamps
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime? // Soft delete support
+
+  // Sistema de Likes
+  likes           Int       @default(0)
+  
+  // Relaciones
+  badges          Badge[]
+  
+  // Índices simples para consultas individuales
+  @@index([degenScore])
+  @@index([totalVolume])
+  @@index([winRate])
+  @@index([isPaid])
+  @@index([likes])
+
+  // Índices compuestos para leaderboard (ordenamiento)
+  @@index([degenScore(sort: Desc), mintedAt(sort: Desc)])
+
+  // PERFORMANCE: Índices adicionales para queries comunes
+  @@index([isPaid, degenScore(sort: Desc), createdAt(sort: Desc)])
+}
+
+model Badge {
+  id          String     @id @default(cuid())
+  name        String
+  description String
+  icon        String
+  rarity      String
+  cardId      String
+  card        DegenCard  @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  
+  @@index([cardId])
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  walletAddress String
+  amount        Float
+  signature     String   @unique
+  paymentType   String   @default("ENTRY") // "ENTRY" | "RENEWAL" | "LEGACY"
+  status        String
+  createdAt     DateTime @default(now())
+  
+  @@index([walletAddress])
+  @@index([signature])
+}
+
+model GlobalStats {
+  id            String   @id @default("singleton")
+  totalCards    Int      @default(0)
+  totalMinted   Int      @default(0)
+  totalVolume   Float    @default(0)
+  avgDegenScore Float    @default(0)
+  topScore      Int      @default(0)
+  updatedAt     DateTime @default(now()) @updatedAt
+}
+
+model HotTrade {
+  id              String   @id @default(cuid())
+  walletAddress   String   // Top wallet que hizo el trade
+  displayName     String?  // Nombre del degen
+  tokenMint       String
+  tokenSymbol     String?
+  type            String   // "buy" | "sell"
+  solAmount       Float    
+  timestamp       DateTime
+  degenScore      Int      // Score del wallet en ese momento
+  
+  createdAt       DateTime @default(now())
+
+  @@index([walletAddress])
+
+  // PERFORMANCE: Índice compuesto para consultas por wallet y tiempo
+  @@index([walletAddress, timestamp(sort: Desc)])
+}
+
+model Subscription {
+  id              String   @id @default(cuid())
+  walletAddress   String   @unique
+  tier            String   @default("FREE") // "FREE" | "BASIC" | "PRO" -> Now used for legacy or specific feature sets
+  isLifetime      Boolean  @default(false)  // Entry fee paid (Lifetime Card & Leaderboard)
+  seasonExpiresAt DateTime?                 // Expiration of current season pass
+  paymentSignature String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([walletAddress])
+  @@index([isLifetime])
+  @@index([seasonExpiresAt])
+}
+
+model PromoCode {
+  id              String   @id @default(cuid())
+  code            String   @unique
+  description     String?
+  maxUses         Int      @default(0) // 0 = unlimited
+  usedCount       Int      @default(0)
+  isActive        Boolean  @default(true)
+  expiresAt       DateTime?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relación con usos
+  redemptions     PromoRedemption[]
+
+  @@index([code])
+  @@index([isActive])
+}
+
+model PromoRedemption {
+  id              String   @id @default(cuid())
+  promoCodeId     String
+  promoCode       PromoCode @relation(fields: [promoCodeId], references: [id], onDelete: Cascade)
+  walletAddress   String
+
+  createdAt       DateTime @default(now())
+
+  @@index([promoCodeId])
+  @@index([walletAddress])
+  @@unique([promoCodeId, walletAddress]) // Un usuario solo puede usar un código una vez
+}
+
+model WeeklyChallenge {
+  id              String   @id @default(cuid())
+  week            Int      @unique // Week number of the year
+  year            Int
+  title           String
+  description     String
+  metric          String   // "likes", "profit", "winRate", "volume", "bestTrade"
+  prizeSOL        Float    @default(1.0)
+  minCardsRequired Int     @default(100) // Mínimo de cards para activar challenge
+  startDate       DateTime
+  endDate         DateTime
+  winnerAddress   String?
+  winnerScore     Float?
+  isActive        Boolean  @default(true)
+
+  createdAt       DateTime @default(now())
+
+  timestamp   DateTime @default(now())
+
+
+  @@index([timestamp])
+}
+
+model ActivityLog {
+  id            String   @id @default(cuid())
+  walletAddress String
+  action        String   // "upgrade", "moonshot", "leaderboard", "referral", "share"
+  metadata      Json?    // Additional data (rank, amount, etc)
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([walletAddress])
+  @@index([action])
+}
+
+// NUEVO: Histórico de scores para gráficos de evolución
+model ScoreHistory {
+  id            String   @id @default(cuid())
+  walletAddress String
+  timestamp     DateTime @default(now())
+  score         Int      // DegenScore en ese momento
+  rank          Int?     // Ranking global en ese momento
+  totalTrades   Int
+  totalVolume   Float
+  profitLoss    Float
+  winRate       Float
+  badges        Int      // Cantidad de badges
+
+  @@index([walletAddress, timestamp(sort: Desc)])
+}
+
+// NUEVO: Sistema de seguimiento de wallets
+model UserFollows {
+  id        String   @id @default(cuid())
+  follower  String   // Wallet que sigue
+  following String   // Wallet siendo seguida
+  createdAt DateTime @default(now())
+
+  @@index([follower, following])
+  @@index([following])
+  @@unique([follower, following]) // Prevenir duplicados
+}
+
+// NUEVO: Preferencias de notificaciones
+model NotificationPreferences {
+  walletAddress    String   @id
+  emailEnabled     Boolean  @default(false)
+  telegramEnabled  Boolean  @default(false)
+  discordEnabled   Boolean  @default(false)
+
+  // Contactos
+  email            String?
+  telegramChatId   String?
+  discordWebhook   String?
+
+  // Tipos de notificaciones
+  followedTrades   Boolean  @default(true)
+  milestones       Boolean  @default(true)
+  challenges       Boolean  @default(true)
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+// NUEVO: Token Security Analysis Storage
+model TokenAnalysis {
+  id                    String   @id @default(cuid())
+  tokenAddress          String   @unique
+
+  // Basic Token Info
+  tokenSymbol           String
+  tokenName             String
+  decimals              Int
+  supply                Float
+  verified              Boolean  @default(false)
+
+  // Security Scores (0-100 for each category)
+  securityScore         Int      // Overall score 0-100
+  authorityScore        Int      // Token authorities score
+  holderScore           Int      // Holder distribution score
+  liquidityScore        Int      // Liquidity analysis score
+  tradingScore          Int      // Trading patterns score
+  metadataScore         Int      // Metadata completeness score
+  marketScore           Int      // Market metrics score
+
+  // Risk Assessment
+  riskLevel             String   // ULTRA_SAFE | LOW_RISK | MODERATE_RISK | HIGH_RISK | EXTREME_DANGER
+  recommendation        String   // Recommendation text
+
+  // Authority Analysis
+  hasMintAuthority      Boolean
+  hasFreezeAuthority    Boolean
+  authoritiesRevoked    Boolean
+
+  // Holder Distribution
+  totalHolders          Int
+  top10HoldersPercent   Float
+  creatorPercent        Float
+  concentrationRisk     String   // LOW | MEDIUM | HIGH | CRITICAL
+  bundleDetected        Boolean  @default(false)
+  bundleWallets         Int      @default(0)
+
+  // Liquidity Analysis
+  totalLiquiditySOL     Float
+  liquidityUSD          Float
+  lpBurned              Boolean  @default(false)
+  lpLocked              Boolean  @default(false)
+  lpLockEnd             DateTime?
+
+  // Trading Patterns
+  bundleBots            Int      @default(0)
+  snipers               Int      @default(0)
+  washTrading           Boolean  @default(false)
+  honeypotDetected      Boolean  @default(false)
+  canSell               Boolean  @default(true)
+
+  // Market Metrics
+  ageInDays             Float
+  volume24h             Float    @default(0)
+  priceChange24h        Float    @default(0)
+  marketCap             Float    @default(0)
+  isPumpAndDump         Boolean  @default(false)
+
+  // Red Flags
+  criticalFlags         Int      @default(0)
+  highFlags             Int      @default(0)
+  totalPenalty          Int      @default(0)
+  redFlagsJson          Json?    // Store detailed red flags as JSON
+
+  // Full Analysis Data (stored as JSON for flexibility)
+  fullAnalysisJson      Json?    // Complete analysis report
+
+  // Metadata
+  imageUrl              String?
+  description           String?
+  website               String?
+
+  // Timestamps
+  analyzedAt            DateTime @default(now())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Analytics
+  viewCount             Int      @default(0)
+  lastViewedAt          DateTime?
+
+  // Indexes for performance
+  @@index([tokenAddress])
+  @@index([securityScore(sort: Desc)])
+  @@index([verified, securityScore(sort: Desc)])
+}
+
+// Flash Sales System - Time-limited offers with countdown timers
+model FlashSale {
+  id                  String   @id @default(cuid())
+  name                String
+  description         String
+  type                String   // "percentage", "fixed", "bonus"
+  discount            Float    // Percentage or fixed amount
+  originalPrice       Float
+  salePrice           Float
+  startTime           DateTime
+  endTime             DateTime
+  maxRedemptions      Int?     // null = unlimited
+  currentRedemptions  Int      @default(0)
+  isActive            Boolean  @default(true)
+  tier                String?  // "bronze", "silver", "gold", "platinum"
+
+  redemptions         FlashSaleRedemption[]
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([isActive, startTime, endTime])
+  @@index([endTime])
+}
+
+model FlashSaleRedemption {
+  id            String    @id @default(cuid())
+  flashSaleId   String
+  flashSale     FlashSale @relation(fields: [flashSaleId], references: [id])
+  walletAddress String
+  redeemedAt    DateTime  @default(now())
+  pricePaid     Float
+
+  @@index([flashSaleId])
+  @@index([walletAddress])
+  @@unique([flashSaleId, walletAddress]) // One redemption per user per sale
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ENGAGEMENT & RETENTION FEATURES
+// ═══════════════════════════════════════════════════════════════
+
+// Daily Login Streak System
+model UserStreak {
+  walletAddress    String   @id
+  currentStreak    Int      @default(0)  // Días consecutivos
+  longestStreak    Int      @default(0)  // Récord personal
+  lastLoginDate    DateTime @default(now())
+  totalLogins      Int      @default(1)
+
+  // Rewards earned from streaks
+  streakPoints     Int      @default(0)  // XP ganados por rachas
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([currentStreak])
+}
+
+// Daily Challenges System
+model DailyChallenge {
+  id               String   @id @default(cuid())
+  date             DateTime  // Día del challenge
+  challengeType    String   // "trades", "winRate", "volume", "follows", "share"
+
+  // Challenge parameters
+  targetValue      Int      // Meta a alcanzar
+  rewardXP         Int      // XP reward
+  rewardBadge      String?  // Badge opcional
+
+  title            String   // "Haz 5 trades ganadores"
+  description      String   // Descripción del challenge
+
+  // Participations
+  completions      DailyChallengeCompletion[]
+
+  createdAt        DateTime @default(now())
+
+  @@unique([date, challengeType])
+  @@index([date])
+}
+
+model DailyChallengeCompletion {
+  id               String   @id @default(cuid())
+  challengeId      String
+  challenge        DailyChallenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  walletAddress    String
+
+  progress         Int      @default(0)  // Progreso actual
+  completed        Boolean  @default(false)
+  completedAt      DateTime?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([challengeId, walletAddress])
+  @@index([walletAddress])
+  @@index([completed])
+}
+
+// Trading Competitions (Daily Duels 1v1)
+model TradingDuel {
+  id               String   @id @default(cuid())
+  status           String   @default("open")  // "open", "active", "finished", "cancelled"
+
+  // Participants
+  creatorWallet    String
+  opponentWallet   String?  // null si aún no hay oponente
+
+  // Competition config
+  entryFee         Float    // SOL entry fee (e.g., 0.5)
+  duration         Int      @default(86400)  // Duration in seconds (24h)
+  startTime        DateTime?
+  endTime          DateTime?
+
+  // Virtual trading
+  virtualStartBalance Float  @default(10)  // Start balance in virtual SOL
+
+  // Results
+  winnerWallet     String?
+  creatorROI       Float?   // Return on Investment %
+  opponentROI      Float?
+
+  // Transactions
+  creatorTxSignature   String?  // Signature del pago de entry
+  opponentTxSignature  String?
+  payoutTxSignature    String?  // Signature del pago al ganador
+
+  // Virtual trades
+  trades           VirtualTrade[]
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([status])
+  @@index([creatorWallet])
+  @@index([opponentWallet])
+  @@index([createdAt])
+}
+
+model VirtualTrade {
+  id               String   @id @default(cuid())
+  duelId           String
+  duel             TradingDuel @relation(fields: [duelId], references: [id], onDelete: Cascade)
+
+  walletAddress    String   // Quién hizo el trade
+
+  // Trade details
+  action           String   // "buy" | "sell"
+  tokenMint        String   // Token address
+  tokenSymbol      String   // Token symbol (e.g., "BONK")
+
+  amountSOL        Float    // Cantidad de SOL virtual usado
+  tokenPrice       Float    // Precio del token al momento
+  tokenAmount      Float    // Cantidad de tokens comprados/vendidos
+
+  // Balance tracking
+  balanceBefore    Float    // Balance antes del trade
+  balanceAfter     Float    // Balance después del trade
+
+  timestamp        DateTime @default(now())
+
+  @@index([duelId, walletAddress])
+  @@index([timestamp])
+}
+
+// User Analytics & Engagement Tracking
+model UserAnalytics {
+  walletAddress       String   @id
+
+  // Login tracking
+  lastLogin           DateTime @default(now())
+  loginCount          Int      @default(1)
+
+  // Engagement metrics
+  challengesCompleted Int      @default(0)
+  duelsPlayed         Int      @default(0)
+  duelsWon            Int      @default(0)
+
+  // XP & Leveling
+  totalXP             Int      @default(0)
+  level               Int      @default(1)
+
+  // Social
+  referralsCount      Int      @default(0)
+  sharesCount         Int      @default(0)
+
+  // Time spent (in seconds)
+  totalTimeSpent      Int      @default(0)
+
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([totalXP])
+  @@index([level])
+  @@index([lastLogin])
+}
+
+// Achievement System
+model Achievement {
+  id               String   @id @default(cuid())
+  key              String   @unique  // "unicorn_hunter", "ghost_trader", etc.
+
+  name             String   // "Unicorn Hunter"
+  description      String   // "Find a 1000x token"
+  icon             String   // Emoji or icon
+  rarity           String   // "common", "rare", "epic", "legendary"
+
+  // Requirements
+  requirementType  String   // "trades", "winRate", "streak", "custom"
+  requirementValue Int      // Threshold to unlock
+
+  // Rewards
+  rewardXP         Int      @default(0)
+  rewardBadge      Boolean  @default(true)
+
+  // Hidden achievements
+  isHidden         Boolean  @default(false)
+
+  // Tracking
+  unlocks          AchievementUnlock[]
+
+  createdAt        DateTime @default(now())
+
+  @@index([key])
+  @@index([rarity])
+}
+
+model AchievementUnlock {
+  id               String   @id @default(cuid())
+  achievementId    String
+  achievement      Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  walletAddress    String
+  unlockedAt       DateTime @default(now())
+
+  @@unique([achievementId, walletAddress])
+  @@index([walletAddress])
+  @@index([unlockedAt])
+}
+
+// ═══════════════════════════════════════════════════════════════
+// KILLER FEATURES - BE #1 IN WEB3
+// ═══════════════════════════════════════════════════════════════
+
+// AI Trading Coach Analysis
+model AICoachAnalysis {
+  id                String   @id @default(cuid())
+  walletAddress     String
+
+  // Analysis metadata
+  analyzedAt        DateTime @default(now())
+  tradesAnalyzed    Int      // Number of trades analyzed
+
+  // AI-generated insights
+  overallScore      Int      // 0-100 discipline score
+  strengths         String     // JSON array of strengths
+  weaknesses        String     // JSON array of weaknesses
+  recommendations   String     // JSON array of recommendations
+  patterns          String     // JSON array of detected patterns
+
+  // Risk analysis
+  riskProfile       String   // "conservative", "moderate", "aggressive", "degen"
+  emotionalTrading  Int      // 0-100 score
+
+  // Performance predictions
+  predictedROI      Float?   // Next 30 days
+  confidenceScore   Float?   // 0-1
+
+  // Full AI response
+  fullAnalysis      String    // Complete AI response
+
+  @@index([walletAddress])
+  @@index([analyzedAt])
+  @@index([overallScore])
+}
+
+// Whale Tracking
+model WhaleWallet {
+  id                String   @id @default(cuid())
+  walletAddress     String   @unique
+
+  // Whale classification
+  tier              String   // "megawhale" (>1000 SOL), "whale" (>100), "shark" (>10)
+  totalBalance      Float    // Current SOL balance
+
+  // Trading stats
+  totalVolume       Float    @default(0)
+  totalTrades       Int      @default(0)
+  winRate           Float    @default(0)
+  avgTradeSize      Float    @default(0)
+
+  // Tracking
+  firstSeenAt       DateTime @default(now())
+  lastTradeAt       DateTime?
+  isActive          Boolean  @default(true)
+
+  // Metadata
+  label             String?  // Optional label/name
+  tags              String?  // JSON array of tags
+
+  // Alerts
+  alerts            WhaleAlert[]
+
+  @@index([tier])
+  @@index([totalBalance])
+}
+
+model WhaleAlert {
+  id                String   @id @default(cuid())
+  whaleId           String
+  whale             WhaleWallet @relation(fields: [whaleId], references: [id], onDelete: Cascade)
+
+  // Alert details
+  alertType         String   // "large_buy", "large_sell", "new_whale", "whale_awakened"
+  tokenMint         String?  // Token involved
+  tokenSymbol       String?
+  amount            Float    // SOL amount
+
+  // Context
+  description       String   // Human-readable description
+  timestamp         DateTime @default(now())
+
+  // Notifications sent
+  notificationsSent Int      @default(0)
+
+  @@index([whaleId])
+  @@index([alertType])
+  @@index([timestamp])
+}
+
+// Telegram User Integration
+model TelegramUser {
+  id                String   @id @default(cuid())
+  telegramId        String   @unique  // Telegram user ID
+  username          String?
+
+  // Linked wallet
+  walletAddress     String?  @unique
+  linkedAt          DateTime?
+
+  // Preferences
+  language          String   @default("en")
+  notifications     Boolean  @default(true)
+  whaleAlerts       Boolean  @default(true)
+  challengeReminders Boolean @default(true)
+
+  // Stats
+  commandsUsed      Int      @default(0)
+  lastActiveAt      DateTime @default(now())
+
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([telegramId])
+  @@index([walletAddress])
+}
+
+// Whale Followers (users following specific whales)
+model WhaleFollower {
+  id                String   @id @default(cuid())
+  walletAddress     String   // User following
+  whaleAddress      String   // Whale being followed
+
+  // Alert preferences
+  alertOnTrades     Boolean  @default(true)
+  minTradeSize      Float    @default(1)  // Min SOL to alert
+
+  createdAt         DateTime @default(now())
+
+  @@unique([walletAddress, whaleAddress])
+  @@index([walletAddress])
+  @@index([whaleAddress])
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SUPER TOKEN SCORE - EL ANÁLISIS MÁS COMPLETO DE WEB3
+// ═══════════════════════════════════════════════════════════════
+
+model SuperTokenAnalysis {
+  id                      String   @id @default(cuid())
+  tokenAddress            String   @unique
+
+  // Basic Token Info
+  tokenSymbol             String
+  tokenName               String
+
+  // Super Score (0-1000)
+  superScore              Int
+  globalRiskLevel         String   // ULTRA_SAFE | VERY_SAFE | SAFE | MODERATE | RISKY | VERY_RISKY | EXTREME_DANGER | SCAM
+  recommendation          String   @db.Text
+
+  // Score Breakdown (cada componente contribuye al score final)
+  baseSecurityScore       Int      // 0-100
+  newWalletScore          Int      // 0-50
+  insiderScore            Int      // 0-50
+  volumeScore             Int      // 0-40
+  socialScore             Int      // 0-30
+  botDetectionScore       Int      // 0-60
+  smartMoneyScore         Int      // 0-70
+  teamScore               Int      // 0-40
+  pricePatternScore       Int      // 0-50
+  historicalHoldersScore  Int      // 0-40
+  liquidityDepthScore     Int      // 0-50
+  crossChainScore         Int      // 0-30
+  competitorScore         Int      // 0-30
+  rugCheckScore           Int      // 0-100
+  dexScreenerScore        Int      // 0-60
+  birdeyeScore            Int      // 0-50
+  jupiterScore            Int      // 0-50
+
+  // Key Metrics (para queries rápidas)
+  walletsUnder10Days      Int      // Número de wallets nuevas
+  percentageNewWallets    Float    // % de wallets nuevas
+  insiderWallets          Int      // Wallets de insiders
+  insiderProfitTaking     Boolean  // ¿Insiders vendiendo?
+  realVolume24h           Float    // Volumen real (sin wash trading)
+  fakeVolumePercent       Float    // % de volumen fake
+  totalBots               Int      // Número de bots detectados
+  botPercent              Float    // % de actividad de bots
+  smartMoneySignal        String   // STRONG_BUY | BUY | NEUTRAL | SELL | STRONG_SELL
+  teamTokensLocked        Boolean  // ¿Tokens del team bloqueados?
+  pricePattern            String   // PUMP_AND_DUMP | ORGANIC_GROWTH | etc.
+  liquidityHealth         String   // EXCELLENT | GOOD | FAIR | POOR | CRITICAL
+
+  // Red Flags & Green Flags
+  totalRedFlags           Int      @default(0)
+  criticalRedFlags        Int      @default(0)
+  highRedFlags            Int      @default(0)
+  totalGreenFlags         Int      @default(0)
+
+  // Full Data (JSON completo con todos los detalles)
+  fullDataJson            Json     // SuperTokenScore completo
+  redFlagsJson            Json     // Array de red flags
+  greenFlagsJson          Json     // Array de green flags
+
+  // Timestamps & Performance
+  analyzedAt              DateTime @default(now())
+  analysisTimeMs          Int      // Tiempo que tomó el análisis
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  // Analytics
+  viewCount               Int      @default(0)
+  lastViewedAt            DateTime?
+
+  // Indexes for performance
+  @@index([tokenAddress])
+  @@index([superScore(sort: Desc)])
+  @@index([globalRiskLevel])
+  @@index([analyzedAt(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@index([viewCount(sort: Desc)])
+  @@index([superScore(sort: Desc), globalRiskLevel])
+}
+// ---------------------------------------------------------------
+// RATE LIMITING - Persistent rate limit tracking
+// ---------------------------------------------------------------
+
+model RateLimitLog {
+  id          String   @id @default(cuid())
+  identifier  String   // IP address or custom identifier
+  endpoint    String?  // Optional endpoint tracking
+  timestamp   DateTime @default(now())
+
+  @@index([identifier, timestamp])
+  @@index([endpoint, timestamp])
+  @@index([timestamp]) // For cleanup queries
+}
+
+// ---------------------------------------------------------------
+// REFERRAL SYSTEM - Multi-level referral tracking
+// ---------------------------------------------------------------
+
+model Referral {
+  id              String   @id @default(cuid())
+  referrerAddress String   // Wallet that referred
+  referredAddress String  // Wallet that was referred
+  rewardAmount    Float    @default(0) // Total rewards earned
+  rewardPaid      Boolean  @default(false) // Whether reward was paid
+  hasPaid         Boolean  @default(false) // Whether referred user has paid
+  paidAt          DateTime? // When the user paid
+  level           Int      @default(1) // Referral level (1,2,3)
+  createdAt       DateTime @default(now())
+
+  @@index([referrerAddress])
+  @@index([referredAddress])
+  @@index([referrerAddress, createdAt])
+  @@unique([referrerAddress, referredAddress], map: "Referral_referrerAddress_referredAddress_key")
+}

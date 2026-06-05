@@ -1,0 +1,96 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Run database migrations
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Build application
+        run: npm run build
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          HELIUS_API_KEY: ${{ secrets.HELIUS_API_KEY }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+
+      - name: Notify deployment
+        if: success()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          custom_payload: |
+            {
+              text: '🚀 DegenScore deployed to production successfully!',
+              attachments: [{
+                color: 'good',
+                text: `Commit: ${{ github.event.head_commit.message }}\nAuthor: ${{ github.event.head_commit.author.name }}`
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  smoke-test:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    needs: deploy
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for deployment
+        run: sleep 30
+
+      - name: Test homepage
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://degenscore.com)
+          if [ $response -ne 200 ]; then
+            echo "Homepage returned $response"
+            exit 1
+          fi
+
+      - name: Test API health
+        run: |
+          response=$(curl -s https://degenscore.com/api/health)
+          echo "Health check response: $response"
+
+      - name: Notify if tests fail
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: '❌ Smoke tests failed after deployment!'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

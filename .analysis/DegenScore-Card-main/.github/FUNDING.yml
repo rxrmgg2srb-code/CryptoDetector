@@ -1,0 +1,17 @@
+# These are supported funding model platforms
+
+# github: [rxrmgg2srb-code] # GitHub Sponsors (uncomment when set up)
+# patreon: degenscore # Patreon (uncomment when set up)
+# open_collective: degenscore # Open Collective (uncomment when set up)
+# ko_fi: degenscore # Ko-fi (uncomment when set up)
+# tidelift: npm/degenscore # Tidelift (uncomment when set up)
+# community_bridge: degenscore # CommunityBridge (uncomment when set up)
+# liberapay: degenscore # Liberapay (uncomment when set up)
+# issuehunt: degenscore # IssueHunt (uncomment when set up)
+# otechie: degenscore # Otechie (uncomment when set up)
+# lfx_crowdfunding: degenscore # LFX Crowdfunding (uncomment when set up)
+
+# Custom funding links
+custom:
+  - "https://degenscore.com/sponsor"
+  - "https://twitter.com/DegenScore"

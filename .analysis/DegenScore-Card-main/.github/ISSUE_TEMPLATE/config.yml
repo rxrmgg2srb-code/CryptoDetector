@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Discord Community
+    url: https://discord.gg/degenscore
+    about: Join our Discord for general questions and community support
+  - name: 📖 Documentation
+    url: https://github.com/rxrmgg2srb-code/DegenScore-Card/blob/main/README.md
+    about: Check our comprehensive documentation for guides and setup instructions
+  - name: 🔒 Security Vulnerability
+    url: https://github.com/rxrmgg2srb-code/DegenScore-Card/blob/main/SECURITY.md
+    about: Report security vulnerabilities privately (DO NOT file public issues)
+  - name: 🐦 Twitter
+    url: https://twitter.com/DegenScore
+    about: Follow us on Twitter for updates and announcements
