@@ -354,7 +354,8 @@
     function clearHistory() {
         localStorage.removeItem('dormant_detector_history');
         localStorage.removeItem('dormant_detector_snapshots');
-        UI.addLogEntry(' Historial limpiado', 'info');
+        localStorage.removeItem('dd_signal_performance_v1');
+        UI.addLogEntry(' Historial y base de datos de rendimiento limpiados', 'info');
     }
 
     function clearBlacklist() {

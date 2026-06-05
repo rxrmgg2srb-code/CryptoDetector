@@ -55,7 +55,7 @@ const SignalTracker = (() => {
         if (token?.isClonePump) return 'CLONE_PUMP';
         if (token?.wakeup?.tier === 'DETECTED') return 'WAKEUP_DETECTED';
         if ((token?.score || 0) >= 75) return 'HIGH_SCORE';
-        return 'STANDARD';
+        return '';
     }
 
     function signalId(token, type, now) {
