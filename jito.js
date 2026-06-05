@@ -21,7 +21,7 @@ const JitoBuy = (() => {
     const JITO_URL  = 'https://mainnet.block-engine.jito.wtf/api/v1/transactions';
     const JUP_QUOTE = 'https://quote-api.jup.ag/v6/quote';
     const JUP_SWAP  = 'https://quote-api.jup.ag/v6/swap';
-    const RPC_URL   = 'https://mainnet.helius-rpc.com/?api-key=ea67d7b7-31a4-4809-aab4-9103bb0a0968';
+    const RPC_URL   = window.DD_CONFIG?.heliusRpcUrl || '/api/solana/rpc';
     const SOL_MINT  = 'So11111111111111111111111111111111111111112';
     const LAMPORTS  = 1_000_000_000;
     const STORE_KEY = 'dd_trading_wallet';

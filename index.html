@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -328,6 +328,14 @@
     </audio>
 
 
+    <!-- Configuration: set API keys here for direct mode, or leave empty to use server proxy -->
+    <script>
+        window.DD_CONFIG = {
+            // Leave empty to use server.js proxy (recommended for production)
+            heliusApiKey: '',
+            heliusRpcUrl: ''
+        };
+    </script>
     <script src="jito.js?v=35"></script>
     <script src="helius.js?v=35"></script>
     <script src="websocket.js?v=35"></script>
