@@ -7,7 +7,7 @@
 
 const SignalTracker = (() => {
     const KEY = 'dd_signal_performance_v1';
-    const MAX_RECORDS = 1500;
+    const MAX_RECORDS = 5000;
     const SIGNAL_BUCKET_MS = 12 * 60 * 60 * 1000;
     const SNAPSHOT_WINDOWS = [
         { key: 'm5', ms: 5 * 60 * 1000 },
@@ -55,7 +55,7 @@ const SignalTracker = (() => {
         if (token?.isClonePump) return 'CLONE_PUMP';
         if (token?.wakeup?.tier === 'DETECTED') return 'WAKEUP_DETECTED';
         if ((token?.score || 0) >= 75) return 'HIGH_SCORE';
-        return '';
+        return 'STANDARD';
     }
 
     function signalId(token, type, now) {
