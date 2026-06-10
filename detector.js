@@ -390,14 +390,17 @@ const Detector = (() => {
         const horasInactivo = scored.dormantBuys?.horasInactivo ?? scored.dormantHours ?? -1;
         if (filters.minDormantHours > 0) {
             if (isDespertando && horasInactivo >= filters.minDormantHours) {
-                // Cumple perfectamente: ha estado dormido X horas y acaba de despertar (tiene compras)
+                // Token dormido que acaba de despertar: PASA TODOS LOS FILTROS.
+                // No queremos que vol5m, subiendo, pumpTarget, etc. lo oculten.
+                if (filterDiag) filterDiag.passed++;
+                return true;
             } else {
                 if (filterDiag) filterDiag.dormant++;
                 return false;
             }
         }
         if (filters.minPumpTarget > 0 && (scored.pumpTarget?.max || 0) < filters.minPumpTarget && !scored.x2Potential?.qualifies) { if (filterDiag) filterDiag.x2 = (filterDiag.x2 || 0) + 1; return false; }
-        if (filters.soloSubiendo && !isDespertando) { const m5up = (scored.priceChange?.m5 || 0) > 0, h1up = (scored.priceChange?.h1 || 0) > 0; if (!m5up && !h1up) { if (filterDiag) filterDiag.subiendo++; return false; } }
+        if (filters.soloSubiendo) { const m5up = (scored.priceChange?.m5 || 0) > 0, h1up = (scored.priceChange?.h1 || 0) > 0; if (!m5up && !h1up) { if (filterDiag) filterDiag.subiendo++; return false; } }
         if (filters.minHolders > 0 && scored.holderCount !== undefined && scored.holderCount > 0 && scored.holderCount < filters.minHolders) { if (filterDiag) filterDiag.holders++; return false; }
         const vol5m = scored.volume5m || 0;
         if (filters.minVolume5m > 0 && vol5m < filters.minVolume5m) { if (filterDiag) filterDiag.vol5m++; return false; }
