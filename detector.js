@@ -392,10 +392,7 @@ const Detector = (() => {
         const horasInactivo = scored.dormantBuys?.horasInactivo ?? scored.dormantHours ?? -1;
         if (filters.minDormantHours > 0) {
             if (isDespertando && horasInactivo >= filters.minDormantHours) {
-                // Token dormido que acaba de despertar: PASA TODOS LOS FILTROS.
-                // No queremos que vol5m, subiendo, pumpTarget, etc. lo oculten.
-                if (filterDiag) filterDiag.passed++;
-                return true;
+                // Token dormido que acaba de despertar: Pasa la validación de inactividad
             } else {
                 if (filterDiag) filterDiag.dormant++;
                 return false;
