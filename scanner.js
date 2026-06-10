@@ -532,6 +532,16 @@ const Scanner = (() => {
         const liveTokens = (typeof LiveStream !== 'undefined' && LiveStream.isConnected)
             ? LiveStream.drainQueue()
             : new Map();
+        // Merge Helius Firehose tokens
+        if (typeof HeliusFirehose !== 'undefined' && HeliusFirehose.isConnected) {
+            const firehoseTokens = HeliusFirehose.drainQueue();
+            for (const [addr, data] of firehoseTokens) {
+                liveTokens.set(addr, { ...(liveTokens.get(addr) || {}), ...data });
+            }
+            if (firehoseTokens.size > 0) {
+                log(`🔥 FIREHOSE aporto ${firehoseTokens.size} tokens al LIVE fetch`, 'info');
+            }
+        }
         const fastTokens = await pollFastHeliusSwaps();
         for (const [addr, data] of fastTokens) {
             liveTokens.set(addr, { ...(liveTokens.get(addr) || {}), ...data });
@@ -631,6 +641,15 @@ const Scanner = (() => {
             }
         }
 
+        // Drain Helius Firehose queue
+        let firehoseTokens = new Map();
+        if (typeof HeliusFirehose !== 'undefined' && HeliusFirehose.isConnected) {
+            firehoseTokens = HeliusFirehose.drainQueue();
+            if (firehoseTokens.size > 0) {
+                log(`🔥 FIREHOSE aporto ${firehoseTokens.size} tokens al scan completo`, 'info');
+            }
+        }
+
         // Merge all discoveries
         const allDiscovered = new Map();
         for (const [addr, data] of dexTokens) {
@@ -648,6 +667,10 @@ const Scanner = (() => {
         // WebSocket live tokens get highest priority
         for (const [addr, data] of wsTokens) {
             allDiscovered.set(addr, { ...(allDiscovered.get(addr) || {}), ...data, source: data.source || 'ws_live' });
+        }
+        // Helius Firehose tokens get highest priority (direct blockchain)
+        for (const [addr, data] of firehoseTokens) {
+            allDiscovered.set(addr, { ...(allDiscovered.get(addr) || {}), ...data, source: data.source || 'helius_firehose' });
         }
 
         // aa ACTUALIZAR Y FUSIONAR CACHA DE TOKENS RECIENTES aa

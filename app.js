@@ -105,6 +105,17 @@
         LiveStream.connect();
     }
 
+    // Wire up Helius Firehose logging
+    if (typeof HeliusFirehose !== 'undefined') {
+        HeliusFirehose.onLog = (msg, level) => UI.addLogEntry(msg, level);
+        HeliusFirehose.onStatusChange = (connected) => {
+            const indicator = document.getElementById('ws-status');
+            if (indicator && connected) {
+                indicator.innerHTML = '<span class="ws-dot ws-dot-on"></span> WS+FIREHOSE';
+            }
+        };
+    }
+
     // Request notification permission
     if ('Notification' in window && Notification.permission === 'default') {
         Notification.requestPermission();
@@ -297,6 +308,19 @@
             LiveStream.connect();
         }
 
+        // Start Helius Firehose if API keys are configured
+        if (typeof HeliusFirehose !== 'undefined') {
+            const keysInput = document.getElementById('helius-firehose-keys');
+            const keysRaw = keysInput ? keysInput.value.trim() : '';
+            if (keysRaw) {
+                const keys = keysRaw.split(',').map(k => k.trim()).filter(k => k.length > 10);
+                if (keys.length > 0) {
+                    HeliusFirehose.connect(keys);
+                    UI.addLogEntry(`🔥 FIREHOSE: Conectando con ${keys.length} API Key(s) de Helius - escuchando TODOS los swaps de Raydium`, 'success');
+                }
+            }
+        }
+
         runScanCycle();
         countdown = SCAN_INTERVAL_SEC;
 
@@ -333,6 +357,11 @@
         // Disconnect WebSocket
         if (typeof LiveStream !== 'undefined') {
             LiveStream.disconnect();
+        }
+
+        // Disconnect Helius Firehose
+        if (typeof HeliusFirehose !== 'undefined') {
+            HeliusFirehose.disconnect();
         }
 
         UI.updateTimer('--');

@@ -123,6 +123,15 @@
                         </div>
                     </div>
 
+                    <div class="wallet-settings" style="margin-top:12px;">
+                        <h4>🔥 Helius Firehose (Raydium Global)</h4>
+                        <div style="display:flex;flex-direction:column;gap:6px;">
+                            <label style="font-size:11px;color:var(--text-secondary);">API Keys (separadas por comas)</label>
+                            <input type="text" id="helius-firehose-keys" placeholder="key1,key2,key3..." class="wallet-input-sm" style="width:100%;font-size:11px;padding:6px 8px;" />
+                            <span style="font-size:10px;color:var(--text-muted);">Conecta multiples keys gratuitas de Helius para escuchar TODOS los swaps de Raydium en tiempo real</span>
+                        </div>
+                    </div>
+
                     <button class="wallet-btn-disconnect" onclick="window.app.disconnectWallet()">
                         Desconectar y Borrar Clave
                     </button>
@@ -336,13 +345,14 @@
             heliusRpcUrl: ''
         };
     </script>
-    <script src="jito.js?v=39"></script>
-    <script src="helius.js?v=39"></script>
-    <script src="websocket.js?v=39"></script>
-    <script src="detector.js?v=39"></script>
-    <script src="scanner.js?v=39"></script>
-    <script src="performance.js?v=39"></script>
-    <script src="ui.js?v=39"></script>
-    <script src="app.js?v=39"></script>
+    <script src="jito.js?v=40"></script>
+    <script src="helius.js?v=40"></script>
+    <script src="websocket.js?v=40"></script>
+    <script src="helius-firehose.js?v=40"></script>
+    <script src="detector.js?v=40"></script>
+    <script src="scanner.js?v=40"></script>
+    <script src="performance.js?v=40"></script>
+    <script src="ui.js?v=40"></script>
+    <script src="app.js?v=40"></script>
 </body>
 </html>
