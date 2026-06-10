@@ -93,7 +93,7 @@ const Detector = (() => {
         const sells5m = tx(pair, 'm5', 'sells'), sells1h = tx(pair, 'h1', 'sells');
         
         const volAntes = Math.max(0, vol(pair, 'h24') - vol(pair, 'h1'));
-        const estabaDormido = volAntes < 50;
+        const estabaDormido = volAntes < 500;
         // El usuario pide "compra o venta" para detectar el despertar
         const tieneTransacciones = (buys5m + buys1h + sells5m + sells1h) > 0;
         
@@ -397,7 +397,7 @@ const Detector = (() => {
             }
         }
         if (filters.minPumpTarget > 0 && (scored.pumpTarget?.max || 0) < filters.minPumpTarget && !scored.x2Potential?.qualifies) { if (filterDiag) filterDiag.x2 = (filterDiag.x2 || 0) + 1; return false; }
-        if (filters.soloSubiendo) { const m5up = (scored.priceChange?.m5 || 0) > 0, h1up = (scored.priceChange?.h1 || 0) > 0; if (!m5up && !h1up) { if (filterDiag) filterDiag.subiendo++; return false; } }
+        if (filters.soloSubiendo && !isDespertando) { const m5up = (scored.priceChange?.m5 || 0) > 0, h1up = (scored.priceChange?.h1 || 0) > 0; if (!m5up && !h1up) { if (filterDiag) filterDiag.subiendo++; return false; } }
         if (filters.minHolders > 0 && scored.holderCount !== undefined && scored.holderCount > 0 && scored.holderCount < filters.minHolders) { if (filterDiag) filterDiag.holders++; return false; }
         const vol5m = scored.volume5m || 0;
         if (filters.minVolume5m > 0 && vol5m < filters.minVolume5m) { if (filterDiag) filterDiag.vol5m++; return false; }

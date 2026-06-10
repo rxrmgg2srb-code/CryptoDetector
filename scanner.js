@@ -120,18 +120,23 @@ const Scanner = (() => {
         const discovered = new Map();
 
         // 7 llamadas EN PARALELO (balanced for rate limit)
-        log('YZ GeckoTerminal: trending x2 + new + Raydium x2 + PumpSwap x2...');
-        const [t1, t2, n1, rayPools, rayVol, psPools, psVol] = await Promise.all([
+        log('YZ GeckoTerminal: trending x5 + new + Raydium x3 + PumpSwap x2 + Solana pools...');
+        const [t1, t2, t3, t4, t5, n1, rayPools, rayVol, rayP2, psPools, psVol, solPools] = await Promise.all([
             safeFetch(`${GECKO_BASE}/networks/solana/trending_pools?page=1`),
             safeFetch(`${GECKO_BASE}/networks/solana/trending_pools?page=2`),
+            safeFetch(`${GECKO_BASE}/networks/solana/trending_pools?page=3`),
+            safeFetch(`${GECKO_BASE}/networks/solana/trending_pools?page=4`),
+            safeFetch(`${GECKO_BASE}/networks/solana/trending_pools?page=5`),
             safeFetch(`${GECKO_BASE}/networks/solana/new_pools?page=1`),
             safeFetch(`${GECKO_BASE}/networks/solana/dexes/raydium/pools?page=1&sort=h24_tx_count_desc`),
             safeFetch(`${GECKO_BASE}/networks/solana/dexes/raydium/pools?page=1&sort=h24_volume_usd_desc`),
+            safeFetch(`${GECKO_BASE}/networks/solana/dexes/raydium/pools?page=2&sort=h24_tx_count_desc`),
             safeFetch(`${GECKO_BASE}/networks/solana/dexes/pumpswap/pools?page=1`),
-            safeFetch(`${GECKO_BASE}/networks/solana/dexes/pumpswap/pools?page=1&sort=h24_volume_usd_desc`)
+            safeFetch(`${GECKO_BASE}/networks/solana/dexes/pumpswap/pools?page=1&sort=h24_volume_usd_desc`),
+            safeFetch(`${GECKO_BASE}/networks/solana/pools?page=1&sort=h24_tx_count_desc`)
         ]);
 
-        for (const data of [t1, t2, n1, rayPools, rayVol, psPools, psVol]) {
+        for (const data of [t1, t2, t3, t4, t5, n1, rayPools, rayVol, rayP2, psPools, psVol, solPools]) {
             if (data?.data) {
                 for (const pool of data.data) {
                     const attrs = pool.attributes || {};
@@ -296,7 +301,7 @@ const Scanner = (() => {
     // FETCH DETAILED PAIR DATA FROM DEXSCREENER
     // Optimized: parallel batches, capped at 200 tokens
     // ==========================================
-    const MAX_DEXS_TOKENS = 500; // Mas cobertura para no perder revivals de bajo volumen
+    const MAX_DEXS_TOKENS = 800; // Mas cobertura para no perder revivals de bajo volumen
 
     async function fetchTokenDetails(addresses) {
         // Cap addresses to avoid spending forever on DexScreener
@@ -572,9 +577,9 @@ const Scanner = (() => {
             const pm5  = pair.priceChange?.m5 || 0;
             const mcap = pair.marketCap || pair.fdv || 0;
             const dormantHours = Detector.calcDormantHours(pair);
-            const recentBuys = (pair.txns?.m5?.buys || 0) + (pair.txns?.h1?.buys || 0);
-            const microcapWakeCandidate = mcap >= 1200 && mcap <= 30000 && dormantHours >= (filters.minDormantHours || 24) && recentBuys > 0;
-            const dormantWakeCandidate = dormantHours >= (filters.minDormantHours || 24) && recentBuys > 0;
+            const recentActivity = (pair.txns?.m5?.buys || 0) + (pair.txns?.h1?.buys || 0) + (pair.txns?.m5?.sells || 0) + (pair.txns?.h1?.sells || 0);
+            const microcapWakeCandidate = mcap >= 1200 && mcap <= 30000 && dormantHours >= (filters.minDormantHours || 24) && recentActivity > 0;
+            const dormantWakeCandidate = dormantHours >= (filters.minDormantHours || 24) && recentActivity > 0;
             if (pm5 < minPriceM5 && !dormantWakeCandidate && !microcapWakeCandidate) continue;
             if (mcap > 0 && mcap < minMcap) continue;
             const signals = _pendingLiveDetails.get(addr) || {};
@@ -724,9 +729,9 @@ const Scanner = (() => {
             // Solo filtrar si minPriceM5 > 0 (el user puso un minimo explicito)
             // Usa el MEJOR de m5 o h1 a un token +54% h1 pero -15% m5 NO debe filtrarse
             const dormantHours = Detector.calcDormantHours(pair);
-            const recentBuys = (pair.txns?.m5?.buys || 0) + (pair.txns?.h1?.buys || 0);
-            const microcapWakeCandidate = mcap >= 1200 && mcap <= 30000 && dormantHours >= (filters.minDormantHours || 24) && recentBuys > 0;
-            const dormantWakeCandidate = dormantHours >= (filters.minDormantHours || 24) && recentBuys > 0;
+            const recentActivity = (pair.txns?.m5?.buys || 0) + (pair.txns?.h1?.buys || 0) + (pair.txns?.m5?.sells || 0) + (pair.txns?.h1?.sells || 0);
+            const microcapWakeCandidate = mcap >= 1200 && mcap <= 30000 && dormantHours >= (filters.minDormantHours || 24) && recentActivity > 0;
+            const dormantWakeCandidate = dormantHours >= (filters.minDormantHours || 24) && recentActivity > 0;
             if (minPriceM5 > 0 && pm5 < minPriceM5 && ph1 < minPriceM5 && !dormantWakeCandidate && !microcapWakeCandidate) continue;
             if (mcap > 0 && mcap < minMcap) continue;
             const signals  = allDiscovered.get(addr) || {};
