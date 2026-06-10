@@ -394,9 +394,12 @@ const Detector = (() => {
         const isDespertando = scored.dormantBuys && scored.dormantBuys.despertando;
         const horasInactivo = scored.dormantBuys?.horasInactivo ?? scored.dormantHours ?? -1;
         if (filters.minDormantHours > 0) {
-            if (isDespertando && horasInactivo >= filters.minDormantHours) {}
-            else if (scored.dormantHours !== -1 && scored.tokenAgeHours !== -1) { if (scored.dormantHours < filters.minDormantHours) { if (filterDiag) filterDiag.dormant++; return false; } }
-            else { if (filterDiag) filterDiag.dormant++; return false; }
+            if (isDespertando && horasInactivo >= filters.minDormantHours) {
+                // Cumple perfectamente: ha estado dormido X horas y acaba de despertar (tiene compras)
+            } else {
+                if (filterDiag) filterDiag.dormant++;
+                return false;
+            }
         }
         if (filters.minPumpTarget > 0 && (scored.pumpTarget?.max || 0) < filters.minPumpTarget && !scored.x2Potential?.qualifies) { if (filterDiag) filterDiag.x2 = (filterDiag.x2 || 0) + 1; return false; }
         if (filters.soloSubiendo) { const m5up = (scored.priceChange?.m5 || 0) > 0, h1up = (scored.priceChange?.h1 || 0) > 0; if (!m5up && !h1up) { if (filterDiag) filterDiag.subiendo++; return false; } }
