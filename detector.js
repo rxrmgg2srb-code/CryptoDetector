@@ -75,16 +75,18 @@ const Detector = (() => {
     function calcDormantHours(pair) {
         if (!pair.pairCreatedAt) return -1;
         const ageHours = (Date.now() - pair.pairCreatedAt) / 3.6e6;
-        const v24 = vol(pair, 'h24'), v6 = vol(pair, 'h6'), v1 = vol(pair, 'h1'), v5 = vol(pair, 'm5');
-        if (v24 <= 0) return Math.min(ageHours, 8760);
+        if (ageHours < 24) return 0; // No puede llevar 24h dormido si tiene menos de 24h de vida
         
-        // Si antes de las ultimas 6 horas habia mas de $50 de volumen o mas del 20% del vol diario, no estaba dormido
-        if (Math.max(0, v24 - v6) > Math.max(50, v24 * 0.20)) return 0;
+        const v24 = vol(pair, 'h24'), v1 = vol(pair, 'h1'), v5 = vol(pair, 'm5');
+        const volAntes = Math.max(0, v24 - v1);
         
-        if (Math.max(0, v6 - v1) > 10) return Math.max(0, ageHours - 3.5);
-        if (Math.max(0, v1 - v5) > 10) return Math.max(0, ageHours - 1);
+        // Si antes de la última hora tuvo mucho volumen (>$1500), no estaba dormido
+        if (volAntes > 1500) return 0;
+        
+        // Si estaba dormido, devolvemos sus horas de vida restando el tiempo reciente que lleva despierto
         if (v5 > 0) return Math.max(0, ageHours - 0.1);
-        return 0;
+        if (v1 > 0) return Math.max(0, ageHours - 1);
+        return Math.min(ageHours, 8760);
     }
 
     function isDormantWithBuys(pair) {
@@ -93,7 +95,7 @@ const Detector = (() => {
         const sells5m = tx(pair, 'm5', 'sells'), sells1h = tx(pair, 'h1', 'sells');
         
         const volAntes = Math.max(0, vol(pair, 'h24') - vol(pair, 'h1'));
-        const estabaDormido = volAntes < 500;
+        const estabaDormido = volAntes < 1500;
         // El usuario pide "compra o venta" para detectar el despertar
         const tieneTransacciones = (buys5m + buys1h + sells5m + sells1h) > 0;
         
