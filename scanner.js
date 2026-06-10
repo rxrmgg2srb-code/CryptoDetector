@@ -793,28 +793,55 @@ const Scanner = (() => {
         
         log(`YZ Filtro: ${filterDiag.passed} pasan | a score:${filterDiag.score} mcap:${filterDiag.mcap} dormant:${filterDiag.dormant} x2:${filterDiag.x2 || 0} subiendo:${filterDiag.subiendo} holders:${filterDiag.holders} vol5m:${filterDiag.vol5m} rug:${filterDiag.rug}`);
 
-        filtered.sort((a, b) => {
-            // Clones siempre van al frente si tienen actividad
+        // DEDUP: Cuando hay tokens con el mismo simbolo, quedarse solo con el mas nuevo.
+        // Esto elimina tokens viejos muertos que comparten nombre con nuevas creaciones.
+        const bySymDedup = new Map();
+        for (const t of filtered) {
+            const sym = (t.pair?.baseToken?.symbol || '').toUpperCase().trim();
+            if (!sym || sym.length < 2) continue;
+            const existing = bySymDedup.get(sym);
+            if (!existing) {
+                bySymDedup.set(sym, t);
+            } else {
+                const existingAge = existing.pair?.pairCreatedAt || 0;
+                const currentAge = t.pair?.pairCreatedAt || 0;
+                if (currentAge > existingAge) {
+                    bySymDedup.set(sym, t);
+                }
+            }
+        }
+        const dedupSet = new Set(bySymDedup.values());
+        const noSymTokens = filtered.filter(t => {
+            const sym = (t.pair?.baseToken?.symbol || '').toUpperCase().trim();
+            return !sym || sym.length < 2;
+        });
+        const dedupFiltered = [...dedupSet, ...noSymTokens];
+        const dedupRemoved = filtered.length - dedupFiltered.length;
+        if (dedupRemoved > 0) {
+            log(`Y DEDUP: ${dedupRemoved} tokens viejos eliminados (mismo nombre que creaciones nuevas)`, 'info');
+        }
+
+        dedupFiltered.sort((a, b) => {
             if (a.isClonePump && !b.isClonePump) return -1;
             if (!a.isClonePump && b.isClonePump) return 1;
             return b.score - a.score;
         });
 
         const despertando = scored.filter(t => t.dormantBuys && t.dormantBuys.despertando).length;
-        log(`Y ${scored.length} total a ${filtered.length} pasan filtros | Y ${despertando} despertando | Y ${cloneCount} clones`);
+        log(`Y ${scored.length} total a ${dedupFiltered.length} pasan filtros | Y ${despertando} despertando | Y ${cloneCount} clones`);
 
         const stats = {
             scanned: allDiscovered.size,
             dormant: scored.filter(t => t.dormantHours >= (filters.minDormantHours || 24)).length,
             awakening: despertando,
-            alerts: filtered.filter(t => t.score >= 75).length,
+            alerts: dedupFiltered.filter(t => t.score >= 75).length,
             clones: cloneCount
         };
 
         const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
         log(`a... Scan completado en ${elapsed}s`, 'success');
 
-        return { tokens: filtered, stats };
+        return { tokens: dedupFiltered, stats };
     }
 
     return {

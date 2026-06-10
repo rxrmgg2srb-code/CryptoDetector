@@ -76,11 +76,31 @@ const Detector = (() => {
         if (!pair.pairCreatedAt) return -1;
         const ageHours = (Date.now() - pair.pairCreatedAt) / 3.6e6;
         const v24 = vol(pair, 'h24'), v6 = vol(pair, 'h6'), v1 = vol(pair, 'h1'), v5 = vol(pair, 'm5');
-        if (v24 <= 0) return Math.min(ageHours, 8760);
-        if (Math.max(0, v24 - v6) > Math.max(50, v24 * 0.20)) return 0;
-        if (Math.max(0, v6 - v1) > 10) return Math.max(0, ageHours - 3.5);
-        if (Math.max(0, v1 - v5) > 10) return Math.max(0, ageHours - 1);
-        if (v5 > 0) return Math.max(0, ageHours - 0.1);
+        const txM5 = tx(pair, 'm5', 'buys') + tx(pair, 'm5', 'sells');
+        const txH1 = tx(pair, 'h1', 'buys') + tx(pair, 'h1', 'sells');
+        const txH6 = tx(pair, 'h6', 'buys') + tx(pair, 'h6', 'sells');
+        const txH24 = tx(pair, 'h24', 'buys') + tx(pair, 'h24', 'sells');
+
+        // Sin volumen ni transacciones en 24h => totalmente dormido
+        if (v24 <= 0 && txH24 <= 0) return Math.min(ageHours, 8760);
+
+        // Actividad significativa fuera de las ultimas 6h => NO dormido
+        const volBefore6h = Math.max(0, v24 - v6);
+        const txBefore6h = Math.max(0, txH24 - txH6);
+        if (volBefore6h > Math.max(50, v24 * 0.20) || txBefore6h > 3) return 0;
+
+        // Actividad entre h6 y h1
+        const volBetween6and1 = Math.max(0, v6 - v1);
+        const txBetween6and1 = Math.max(0, txH6 - txH1);
+        if (volBetween6and1 > 10 || txBetween6and1 > 2) return Math.max(0, ageHours - 3.5);
+
+        // Actividad entre h1 y m5
+        const volBetween1and5m = Math.max(0, v1 - v5);
+        const txBetween1and5m = Math.max(0, txH1 - txM5);
+        if (volBetween1and5m > 10 || txBetween1and5m > 1) return Math.max(0, ageHours - 1);
+
+        // Solo actividad en los ultimos 5min (el "despertar")
+        if (v5 > 0 || txM5 > 0) return Math.max(0, ageHours - 0.1);
         return 0;
     }
     function isDormantWithBuys(pair) {
