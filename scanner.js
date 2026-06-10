@@ -23,7 +23,7 @@ const Scanner = (() => {
     // CachA para recordar tokens recientes y re-evaluar su precio en cada ciclo.
     // Esto nos permite detectar pumps de 1 minuto en tokens ya conocidos.
     const _recentTokensCache = new Map(); // address -> { data, lastSeen }
-    const CACHE_TTL = 6 * 60 * 60 * 1000; // 6h: seguir wake-ups por escalones tras la primera activacion
+    const CACHE_TTL = 24 * 60 * 60 * 1000; // 24h: seguir tokens dormidos durante un dia entero para no perder wakeups
     const _pendingLiveDetails = new Map(); // address -> { data, firstSeen, lastSeen }
     const PENDING_LIVE_TTL = 10 * 60 * 1000;
     const FAST_PROGRAMS = [
@@ -250,7 +250,7 @@ const Scanner = (() => {
     // ==========================================
     async function discoverFromPumpFun() {
         const discovered = new Map();
-        log('YZ Pump.fun GOD: 3 pAginas de tokens activos...');
+        log('YZ Pump.fun GOD: 6 paginas de tokens activos...');
 
         async function pumpFetch(url) {
             // Try direct first, then proxy if CORS blocks
@@ -269,13 +269,16 @@ const Scanner = (() => {
         }
 
         try {
-            const [page1, page2, page3] = await Promise.all([
+            const [page1, page2, page3, page4, page5, page6] = await Promise.all([
                 pumpFetch('https://frontend-api-v3.pump.fun/coins/currently-live?limit=50&offset=0&includeNsfw=false'),
                 pumpFetch('https://frontend-api-v3.pump.fun/coins/currently-live?limit=50&offset=50&includeNsfw=false'),
-                pumpFetch('https://frontend-api-v3.pump.fun/coins/currently-live?limit=50&offset=100&includeNsfw=false')
+                pumpFetch('https://frontend-api-v3.pump.fun/coins/currently-live?limit=50&offset=100&includeNsfw=false'),
+                pumpFetch('https://frontend-api-v3.pump.fun/coins/currently-live?limit=50&offset=150&includeNsfw=false'),
+                pumpFetch('https://frontend-api-v3.pump.fun/coins/currently-live?limit=50&offset=200&includeNsfw=false'),
+                pumpFetch('https://frontend-api-v3.pump.fun/coins/currently-live?limit=50&offset=250&includeNsfw=false')
             ]);
 
-            for (const coins of [page1, page2, page3]) {
+            for (const coins of [page1, page2, page3, page4, page5, page6]) {
                 if (!Array.isArray(coins)) continue;
                 for (const coin of coins) {
                     if (!coin.mint) continue;

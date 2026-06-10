@@ -54,7 +54,9 @@ const SignalTracker = (() => {
         if (token?.x2Potential?.qualifies) return 'X2_SETUP';
         if (token?.isClonePump) return 'CLONE_PUMP';
         if (token?.wakeup?.tier === 'DETECTED') return 'WAKEUP_DETECTED';
+        if (token?.dormantBuys?.despertando) return 'DORMANT_WAKEUP';
         if ((token?.score || 0) >= 75) return 'HIGH_SCORE';
+        if ((token?.dormantHours || 0) >= 24) return 'DORMANT_WATCH';
         return '';
     }
 
@@ -119,6 +121,7 @@ const SignalTracker = (() => {
             name: token?.pair?.baseToken?.name || '',
             type,
             wakeupTier: token?.wakeup?.tier || '',
+            dormantHours: token?.dormantHours || 0,
             firstSeen: now,
             firstPrice: price,
             firstMcap: mcap,
@@ -197,8 +200,13 @@ const SignalTracker = (() => {
         const records = Object.values(load().records || {}).sort((a, b) => b.firstSeen - a.firstSeen);
         if (records.length === 0) return false;
         const headers = [
-            'firstSeen','type','symbol','name','address','firstMcap','lastMcap','maxMcap',
-            'maxMultiple','outcome','firstScore','lastScore','reason','confirmations','url'
+            'firstSeen','type','symbol','name','address',
+            'dormantHours','wakeupTier',
+            'firstPrice','firstMcap','firstLiquidity','firstVolume5m','firstBuyPressure','firstScore',
+            'maxPrice','maxMcap','maxPriceMultiple','maxMcapMultiple','maxMultiple',
+            'lastMcap','lastScore',
+            'outcome','trackingHours',
+            'reason','confirmations','url'
         ];
         const rows = records.map(r => [
             new Date(r.firstSeen).toISOString(),
@@ -206,13 +214,23 @@ const SignalTracker = (() => {
             r.symbol,
             r.name,
             r.address,
+            r.dormantHours || 0,
+            r.wakeupTier || '',
+            r.firstPrice || 0,
             r.firstMcap,
-            r.lastMcap,
-            r.maxMcap,
-            r.maxMultiple,
-            r.outcome,
+            r.firstLiquidity || 0,
+            r.firstVolume5m || 0,
+            r.firstBuyPressure ? +(r.firstBuyPressure).toFixed(3) : 0,
             r.firstScore,
+            r.maxPrice || 0,
+            r.maxMcap,
+            r.maxPriceMultiple || 1,
+            r.maxMcapMultiple || 1,
+            r.maxMultiple,
+            r.lastMcap,
             r.lastScore,
+            r.outcome,
+            r.lastSeen && r.firstSeen ? +((r.lastSeen - r.firstSeen) / 3.6e6).toFixed(1) : 0,
             r.reason,
             (r.confirmations || []).join('|'),
             r.firstUrl
